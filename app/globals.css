@@ -36,6 +36,11 @@ body {
 body.nav-open { overflow: hidden; }
 ::selection { background: var(--copper); color: white; }
 img { display: block; max-width: 100%; }
+
+/* `picture` sai do fluxo para que o `img` continue sendo o filho que as
+   regras de layout esperam. Sem isso o elemento é `inline` e a caixa dele
+   briga com as proporções escritas para o `img`. */
+picture { display: contents; }
 a { color: inherit; text-decoration: none; }
 button, input, select, textarea { color: inherit; font: inherit; }
 button { cursor: pointer; }
@@ -723,7 +728,10 @@ main { min-height: 65vh; }
 .transformation-lab__copy > p:not(.technical-label) { max-width: 430px; color: rgba(250, 248, 243, 0.66); font-size: 14px; }
 .transformation-lab__copy .inline-link { margin-top: 38px; }
 .comparison { position: relative; min-height: 660px; overflow: hidden; background: var(--stone); isolation: isolate; }
-.comparison > img {
+/* Descendente, não filho direto: as fotos passaram a vir dentro de
+   `<picture>`, que é `display: contents` mas continua no caminho do
+   seletor. */
+.comparison img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1856,4 +1864,32 @@ main { min-height: 65vh; }
     transition-duration: 0.01ms !important;
   }
   .motion-ready [data-reveal] { opacity: 1; transform: none; }
+}
+
+/* ---- Transição entre páginas ----
+   Aberta por components/ViewTransitions.tsx no clique de um link interno.
+   O CSS só descreve como uma tela substitui a outra.
+
+   Deslocamento horizontal em vez de vertical: a navegação da Nívora é
+   lateral — o cabeçalho numera as seções 01 a 04 na horizontal — então a
+   troca acompanha essa leitura. */
+::view-transition-old(root) {
+  animation: pagina-sai 200ms cubic-bezier(.65, 0, .35, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: pagina-entra 460ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes pagina-sai {
+  to { opacity: 0; transform: translateX(-14px); }
+}
+
+@keyframes pagina-entra {
+  from { opacity: 0; transform: translateX(22px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none; }
 }

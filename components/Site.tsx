@@ -1,10 +1,10 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- Static WebP assets are served directly by the Cloudflare Worker build. */
-
 import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { content, hrefFor, Locale, PageKey, Project, projects } from "@/lib/content";
+import Picture, { SIZES } from "./Picture";
+import ViewTransitions from "./ViewTransitions";
 
 const uiCopy = {
   pt: {
@@ -301,7 +301,7 @@ function HomeHero({ locale }: { locale: Locale }) {
         </div>
         <div className="home-hero__visual">
           <div className="home-hero__image">
-            <img src="/images/casa-patio-alto.webp" alt={ui.projectImage} fetchPriority="high" />
+            <Picture src="/images/casa-patio-alto.webp" alt={ui.projectImage} sizes={SIZES.hero} priority />
           </div>
           <span className="coordinate coordinate--top">23°16&apos;S / 47°17&apos;W</span>
           <span className="coordinate coordinate--side">N/01 · 2025</span>
@@ -348,7 +348,7 @@ function ProjectObservatory({ locale }: { locale: Locale }) {
           href={hrefFor(locale, "project", active.slug)}
           aria-label={`${ui.openProject}: ${active.name}`}
         >
-          <img key={active.image} src={active.image} alt={`${active.name} — ${shared.projectTypes[active.slug]}`} />
+          <Picture key={active.image} src={active.image} alt={`${active.name} — ${shared.projectTypes[active.slug]}`} sizes={SIZES.feature} />
           <div className="project-observatory__stamp">
             <span>{ui.featured}</span>
             <strong>{active.name}</strong>
@@ -489,8 +489,8 @@ function BeforeAfter({
   const labels = content.projectLabels[locale];
   return (
     <div className="comparison" style={{ "--position": `${position}%` } as React.CSSProperties}>
-      <img className="comparison__after" src={after} alt={`${name} — ${labels.after.toLowerCase()}`} />
-      <img className="comparison__before" src={before} alt={`${name} — ${labels.before.toLowerCase()}`} />
+      <Picture className="comparison__after" src={after} alt={`${name} — ${labels.after.toLowerCase()}`} sizes={SIZES.half} />
+      <Picture className="comparison__before" src={before} alt={`${name} — ${labels.before.toLowerCase()}`} sizes={SIZES.half} />
       <span className="comparison__label comparison__label--before">{labels.before}</span>
       <span className="comparison__label comparison__label--after">{labels.after}</span>
       <span className="comparison__handle" aria-hidden="true"><i /></span>
@@ -769,13 +769,10 @@ function CompanyPage({ locale }: { locale: Locale }) {
             <article key={name}>
               <div className="team-dossiers__monogram">
                 <span>0{index + 1}</span>
-                <img
+                <Picture
                   src={teamImages[index]}
                   alt={`${uiCopy[locale].portrait} ${name}`}
-                  width="720"
-                  height="1518"
-                  loading="lazy"
-                  decoding="async"
+                  sizes={SIZES.portrait}
                 />
               </div>
               <h3>{name}</h3>
@@ -815,7 +812,7 @@ function ProjectTile({ project, locale, index }: { project: Project; locale: Loc
     <article className={`project-tile project-tile--${(index % 4) + 1}`} data-reveal>
       <Link href={hrefFor(locale, "project", project.slug)}>
         <div className="project-tile__image">
-          <img src={project.image} alt={`${project.name} — ${shared.projectTypes[project.slug]}`} loading="lazy" />
+          <Picture src={project.image} alt={`${project.name} — ${shared.projectTypes[project.slug]}`} sizes={SIZES.card} />
           <span><Arrow /></span>
         </div>
         <div className="project-tile__meta">
@@ -885,7 +882,7 @@ function ProjectPage({ locale, project }: { locale: Locale; project: Project }) 
           <p>{copy.summary}</p>
         </div>
         <div className="case-hero__image">
-          <img src={project.image} alt={`${project.name} — ${shared.projectTypes[project.slug]}`} fetchPriority="high" />
+          <Picture src={project.image} alt={`${project.name} — ${shared.projectTypes[project.slug]}`} sizes={SIZES.feature} priority />
           <span className="coordinate">{project.city} / SP</span>
         </div>
         <dl aria-label={ui.details}>
@@ -909,7 +906,7 @@ function ProjectPage({ locale, project }: { locale: Locale; project: Project }) 
       <section className="case-gallery" aria-label={`${ui.gallery}: ${project.name}`}>
         {project.gallery.map((image, index) => (
           <figure key={image}>
-            <img src={image} alt={`${project.name} — ${ui.projectImage} ${index + 1}`} loading={index ? "lazy" : "eager"} />
+            <Picture src={image} alt={`${project.name} — ${ui.projectImage} ${index + 1}`} sizes={SIZES.half} priority={index === 0} />
             <figcaption>{project.name} / {String(index + 1).padStart(2, "0")}</figcaption>
           </figure>
         ))}
@@ -1178,6 +1175,7 @@ export default function Site({
   const project = useMemo(() => projects.find((item) => item.slug === projectSlug), [projectSlug]);
   return (
     <>
+      <ViewTransitions />
       <a className="skip-link" href="#main">{content.shared[locale].skip}</a>
       <Header locale={locale} page={page} projectSlug={projectSlug} />
       <main id="main">

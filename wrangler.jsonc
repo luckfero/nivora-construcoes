@@ -1,7 +1,12 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "nivora-construcoes",
-  "compatibility_date": "2026-07-22",
+  // Acompanha o workerd que o wrangler instalado embarca, que vai até
+  // 2026-05-22. Com uma data à frente disso o `npm run dev` nem inicia:
+  // "The Workers runtime failed to start". Atualizar o wrangler não
+  // resolve — o binário é o mesmo. Os outros sites da Varanda usam
+  // 2026-05-15/22; esta era a exceção.
+  "compatibility_date": "2026-05-22",
   "compatibility_flags": [
     "nodejs_compat"
   ],

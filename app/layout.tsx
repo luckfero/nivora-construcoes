@@ -18,7 +18,15 @@ export const metadata: Metadata = {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
   },
-  robots: { index: true, follow: true },
+  /* Projeto conceitual: empresa, equipe, obras, áreas, anos e indicadores
+     são fictícios, e as cidades citadas (São Paulo, Itu, Campinas) são
+     reais. Deixar isso indexável coloca uma construtora que não existe nos
+     resultados de quem procura construtora nessas cidades — alguém pode
+     tentar contratar. O Brasa do Vale já usa `noindex` pelo mesmo motivo;
+     esta era a exceção.
+     O aviso de projeto conceitual continua visível no rodapé e nas páginas
+     de projeto, nas três línguas. */
+  robots: { index: false, follow: false },
   openGraph: {
     type: "website",
     locale: "pt_BR",

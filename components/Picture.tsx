@@ -1,0 +1,67 @@
+/**
+ * Imagem responsiva servida das variantes de public/images/r/.
+ *
+ * Antes o site entregava sempre o arquivo cheio: o celular baixava os
+ * mesmos bytes do desktop. As variantes vêm de scripts/optimize-images.mjs
+ * e são versionadas, porque o build da Cloudflare não roda o script.
+ *
+ * A ordem dentro de `<picture>` importa: vence o primeiro `<source>` que o
+ * navegador entende, então AVIF vem antes de WebP. O `<img>` final aponta
+ * para o original — se uma variante faltar, degrada em vez de quebrar.
+ */
+/* Quais larguras existem de fato para cada imagem. Imagem menor que uma
+   largura alvo não é ampliada — os retratos da equipe têm 720px e só
+   ganharam a variante de 480 —, então citar as quatro no `srcset` faria o
+   navegador escolher justamente um arquivo que dá 404. */
+import { imageWidths } from "../app/image-manifest";
+
+/** "/images/casa-aurora.webp" → "casa-aurora" */
+function baseName(src: string): string {
+  return src.split("/").pop()?.replace(/\.[a-z0-9]+$/i, "") ?? "";
+}
+
+function srcSet(name: string, format: "avif" | "webp"): string {
+  return (imageWidths[name] ?? [])
+    .map((w) => `/images/r/${name}-${w}.${format} ${w}w`)
+    .join(", ");
+}
+
+type PictureProps = {
+  src: string;
+  alt: string;
+  sizes: string;
+  className?: string;
+  priority?: boolean;
+};
+
+export default function Picture({ src, alt, sizes, className, priority = false }: PictureProps) {
+  const name = baseName(src);
+  return (
+    <picture>
+      <source type="image/avif" srcSet={srcSet(name, "avif")} sizes={sizes} />
+      <source type="image/webp" srcSet={srcSet(name, "webp")} sizes={sizes} />
+      <img
+        src={src}
+        alt={alt}
+        className={className}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : undefined}
+        decoding="async"
+      />
+    </picture>
+  );
+}
+
+/** Larguras por contexto, centralizadas para não divergirem do layout real. */
+export const SIZES = {
+  /** Foto do hero, pouco mais da metade da tela em desktop. */
+  hero: "(max-width: 900px) 100vw, 58vw",
+  /** Imagem grande de projeto em destaque. */
+  feature: "(max-width: 900px) 100vw, 55vw",
+  /** Cartão em grade de projetos. */
+  card: "(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw",
+  /** Metade da tela nos blocos de antes e depois. */
+  half: "(max-width: 900px) 100vw, 50vw",
+  /** Retrato da equipe. */
+  portrait: "(max-width: 700px) 45vw, 240px",
+} as const;
