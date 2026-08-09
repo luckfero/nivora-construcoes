@@ -493,21 +493,6 @@ main { min-height: 65vh; }
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
-/* O aviso de projeto fictício na faixa de indicadores. Estava a 7px com
-   38% de opacidade — dois fatores multiplicando na direção errada, o que
-   o deixava praticamente invisível justamente ao lado dos números que ele
-   precisa ressalvar. Continua discreto, agora legível. */
-.home-hero__specs > small {
-  position: absolute;
-  left: max(var(--pad), calc((100vw - var(--max)) / 2 + var(--pad)));
-  bottom: 14px;
-  max-width: 520px;
-  opacity: 0.72;
-  font-size: 12px;
-  line-height: 1.5;
-  text-transform: none;
-  letter-spacing: 0;
-}
 
 /* Project observatory */
 .project-observatory { background: var(--ivory); }

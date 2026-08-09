@@ -323,7 +323,6 @@ function HomeHero({ locale }: { locale: Locale }) {
             <span>{label}</span>
           </div>
         ))}
-        <small>* {shared.conceptual}</small>
       </div>
     </section>
   );
