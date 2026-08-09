@@ -1913,3 +1913,50 @@ main { min-height: 65vh; }
   ::view-transition-old(root),
   ::view-transition-new(root) { animation: none; }
 }
+
+/* ─────────────────── indicador de rolagem ───────────────────
+ *
+ * Desenhado por components/ScrollIndicator.tsx, que só escreve a altura e o
+ * deslocamento do polegar. Toda a aparência está aqui.
+ *
+ * Sem trilho visível: o pedido era ver só o indicador, não a calha. E sem
+ * ocupar espaço — `position: fixed` tira o elemento do fluxo, então a página
+ * tem exatamente a mesma largura com ou sem ele.
+ */
+.scroll-indicator {
+  position: fixed;
+  z-index: 120;
+  top: 18px;
+  bottom: 18px;
+  right: 6px;
+  width: 3px;
+  /* Nunca intercepta clique: é indicação, não controle. */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+
+/* Aparece enquanto rola e some sozinho quando a rolagem para. */
+.scroll-indicator[data-ativo="sim"] { opacity: 1; }
+
+.scroll-indicator__thumb {
+  width: 100%;
+  border-radius: 3px;
+  background: var(--copper);
+  /* O cobre sozinho some sobre a foto escura do hero; o brilho por baixo
+     garante que a marca continue visível em qualquer fundo. */
+  box-shadow: 0 0 0 1px rgba(250, 248, 243, 0.28);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Sem o esmaecer. Aparecer e sumir de uma vez ainda é movimento, então o
+     indicador passa a ficar permanentemente visível — discreto, mas fixo. */
+  .scroll-indicator { opacity: 1; transition: none; }
+}
+
+/* No celular a barra do sistema já se esconde sozinha e o dedo mostra a
+   posição pelo próprio gesto. Um segundo indicador ali só rouba largura de
+   uma tela que já é estreita. */
+@media (max-width: 700px) {
+  .scroll-indicator { display: none; }
+}
