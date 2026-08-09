@@ -138,3 +138,29 @@ test("as três línguas pedem para não indexar", async () => {
     assert.deepEqual(robots, ["noindex, nofollow"], rota);
   }
 });
+
+test("cada rota declara um canonical absoluto e único", async () => {
+  const pedir = await carregarWorker("can");
+  const SITE = "https://nivora-construcoes.luccaoliveira123.workers.dev";
+
+  const esperado = {
+    /* A raiz serve a mesma home que /pt. O canonical aponta para /pt
+       porque é a versão que tem par nas outras duas línguas. */
+    "/": `${SITE}/pt`,
+    "/pt": `${SITE}/pt`,
+    "/es": `${SITE}/es`,
+    "/en": `${SITE}/en`,
+    "/pt/projetos": `${SITE}/pt/projetos`,
+    "/es/proyectos": `${SITE}/es/proyectos`,
+    "/en/projects": `${SITE}/en/projects`,
+    "/pt/projetos/casa-patio-alto": `${SITE}/pt/projetos/casa-patio-alto`,
+  };
+
+  for (const [rota, url] of Object.entries(esperado)) {
+    const head = (await (await pedir(rota)).text()).split("</head>")[0];
+    const encontrados = [...head.matchAll(/rel="canonical" href="([^"]*)"/g)].map((m) => m[1]);
+    /* Duas tags de canonical fazem o buscador ignorar as duas. */
+    assert.equal(encontrados.length, 1, `${rota} tem ${encontrados.length} canonical`);
+    assert.equal(encontrados[0], url, rota);
+  }
+});

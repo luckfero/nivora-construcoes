@@ -8,7 +8,15 @@ import "@fontsource/cormorant-garamond/latin-500.css";
 import "@fontsource/cormorant-garamond/latin-600.css";
 import "./globals.css";
 
+/* Sem `metadataBase` o Next escreve o canonical como caminho relativo
+   (`/pt` em vez do endereço completo). Relativo é ambíguo: o mesmo `/pt`
+   existe em qualquer host, então o buscador não sabe qual endereço é o
+   oficial — exatamente o que o canonical deveria resolver. */
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://nivora-construcoes.luccaoliveira123.workers.dev";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Nívora Construções — Precisão para construir",
     template: "%s — Nívora Construções",
