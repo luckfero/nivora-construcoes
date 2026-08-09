@@ -5,7 +5,6 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { content, hrefFor, Locale, PageKey, Project, projects } from "@/lib/content";
 import Picture, { SIZES } from "./Picture";
 import Reveal from "./Reveal";
-import ScrollIndicator from "./ScrollIndicator";
 import ViewTransitions from "./ViewTransitions";
 
 const uiCopy = {
@@ -1170,7 +1169,6 @@ export default function Site({
   return (
     <>
       <ViewTransitions />
-      <ScrollIndicator />
       {/* A chave muda a cada navegação: os elementos são outros e precisam
           ser observados de novo. */}
       <Reveal chave={`${locale}/${page}/${projectSlug ?? ""}`} />
