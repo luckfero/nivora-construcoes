@@ -164,3 +164,18 @@ test("cada rota declara um canonical absoluto e único", async () => {
     assert.equal(encontrados[0], url, rota);
   }
 });
+
+test("o HTML servido não esconde nada: a trava do reveal só entra pelo JS", async () => {
+  const pedir = await carregarWorker("rev");
+
+  for (const rota of ["/", "/pt", "/es", "/en", "/pt/projetos", "/pt/projetos/casa-patio-alto"]) {
+    const html = await (await pedir(rota)).text();
+
+    /* `motion-ready` é o que faz o CSS zerar a opacidade dos `[data-reveal]`.
+       Se viesse já no HTML, quem abrisse o site com o JavaScript bloqueado —
+       ou antes de ele carregar — veria a página em branco. Antes desta
+       rodada a classe era adicionada sem sequer checar se o
+       `IntersectionObserver` existia. */
+    assert.doesNotMatch(html, /class="[^"]*\bmotion-ready\b/, rota);
+  }
+});
