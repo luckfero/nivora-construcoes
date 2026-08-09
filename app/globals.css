@@ -245,7 +245,12 @@ main { min-height: 65vh; }
 }
 .language-switch { display: flex; align-items: center; gap: 11px; }
 .language-switch a {
-  padding: 6px 2px;
+  /* 24px é o mínimo da WCAG para alvo de toque. Com `6px 2px` o link
+     media 21x30 e ficava estreito demais para o dedo — a folga é dada
+     no espaçamento horizontal, que não muda o desenho. */
+  padding: 6px 7px;
+  min-width: 24px;
+  text-align: center;
   opacity: 0.48;
   font-size: 11px;
   font-weight: 800;
@@ -256,6 +261,9 @@ main { min-height: 65vh; }
 .language-switch a.is-active { opacity: 1; color: var(--copper-dark); }
 .language-switch a.is-active { border-bottom: 1px solid currentColor; }
 .header-cta {
+  /* Sem espaçamento vertical o botão media 17px de altura — pequeno até
+     para o mouse, e bem abaixo dos 24px de alvo de toque. */
+  padding-block: 9px;
   display: inline-flex;
   align-items: center;
   gap: 16px;
@@ -1569,7 +1577,11 @@ main { min-height: 65vh; }
   color: rgba(250, 248, 243, 0.62);
   font-size: 10px;
 }
-.footer-grid nav { display: flex; flex-direction: column; gap: 8px; color: var(--paper); font-size: 11px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; }
+.footer-grid nav { display: flex; flex-direction: column; color: var(--paper); font-size: 11px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; }
+/* O espaçamento saiu do `gap` e virou área clicável. Os links mediam 17px
+   de altura — abaixo dos 24px mínimos e desconfortáveis de acertar no
+   dedo. O desenho é o mesmo; o que muda é o tamanho do alvo. */
+.footer-grid nav a { padding-block: 7px; }
 /* O aviso de que a empresa é fictícia. É a informação mais importante da
    página para quem chega sem contexto, e estava no menor corpo do site.
    Discreto continua sendo — não é destaque, é rodapé —, mas em tamanho
@@ -1584,6 +1596,8 @@ main { min-height: 65vh; }
 }
 .footer-grid > div { text-align: right; }
 .footer-grid > div p { margin: 0 0 7px; }
+/* Mesmo motivo: o link de privacidade media 14px de altura. */
+.footer-grid > div a { display: inline-block; padding-block: 6px; }
 .footer-grid a:hover { color: white; }
 
 /* Reveal */
@@ -1614,7 +1628,10 @@ main { min-height: 65vh; }
   .project-observatory__body { grid-template-columns: 1.05fr 0.95fr; }
 }
 
-@media (max-width: 1020px) {
+/* 1100 e nao 1020: o iPad Pro de 12,9" em pe tem 1024px de largura e caía
+   4px fora, recebendo o layout de desktop numa tela estreita demais para
+   ele — cinco rotas transbordavam. */
+@media (max-width: 1100px) {
   :root { --header: 70px; }
   .desktop-nav { display: none; }
   .header-grid { grid-template-columns: 1fr auto; }
@@ -1711,7 +1728,15 @@ main { min-height: 65vh; }
   .section-title { display: block; margin-bottom: 52px; }
   .section-title__rail { width: 118px; margin-bottom: 38px; }
   .section-title__rail span { margin-bottom: 26px; }
-  .section-title h2 { font-size: clamp(50px, 15vw, 75px); }
+  /* Escala de titulo no celular. Os pisos dos clamp eram de 50 a 76px:
+     num aparelho de 393px isso rendia titulos de 59 a 82px, grandes
+     demais para ler de uma vez. A hierarquia se mantem — h1 de pagina
+     acima do h2 de secao — so que numa faixa que cabe na mao. */
+  .section-title h2 { font-size: clamp(30px, 9.5vw, 50px); }
+
+  /* Estas quatro tinham tamanho fixo em pixels e nenhum ajuste para
+     celular — ficavam em 57 a 63px em qualquer aparelho, do mais estreito
+     ao mais largo. Entram na mesma escala das demais. */
   .section-title__copy > p { font-size: 14px; }
 
   .home-hero__grid {
@@ -1721,10 +1746,26 @@ main { min-height: 65vh; }
   }
   .home-hero__grid::before { left: 22%; }
   .home-hero__grid::after { top: 21%; }
-  .home-hero__copy { order: 1; }
+  /* `min-width: 0` é o que impede uma palavra longa de esticar a coluna.
+     Item de flex não encolhe abaixo do próprio conteúdo mínimo — e o
+     mínimo aqui é a maior palavra do título. Com o corpo em 20vw,
+     "TRANSFORMAR." media 397px numa tela de 393 e arrastava o bloco
+     inteiro para fora, raspando as letras nas duas bordas. */
+  .home-hero__copy { order: 1; min-width: 0; }
   .home-hero__copy .technical-label { margin-bottom: 26px; }
-  .home-hero h1 { width: 100%; font-size: clamp(64px, 20vw, 91px); }
-  .home-hero__lead { margin-top: 29px; }
+
+  /* Era `clamp(64px, 20vw, 91px)`: 78,6px num aparelho de 393px, com cada
+     palavra ocupando uma linha inteira. Continua sendo um título de
+     impacto, mas agora se lê de uma vez. */
+  /* A entrelinha de 0.76 do desktop funciona em corpo grande, onde a
+     altura das maiúsculas domina. Reduzido o corpo, o til do "Ã" e a
+     cedilha passam a encostar na linha vizinha — e o português tem
+     acento em quase toda frase. 0.88 mantém o bloco compacto sem
+     colisão. */
+  .home-hero h1 { width: 100%; font-size: clamp(34px, 11.5vw, 58px); line-height: 0.88; }
+  /* 14px é corpo de legenda, não de texto corrido que alguém precisa ler
+     num celular. */
+  .home-hero__lead { margin-top: 29px; font-size: 16px; }
   .home-hero__actions { align-items: flex-start; flex-direction: column; gap: 17px; }
   .home-hero__visual { order: 2; width: calc(100% + var(--pad) * 2); min-height: 480px; margin: 50px calc(var(--pad) * -1) 0; }
   .home-hero__image { inset: 0; clip-path: polygon(0 7%, 100% 0, 100% 93%, 0 100%); }
@@ -1763,7 +1804,7 @@ main { min-height: 65vh; }
   .process-blueprint__rail strong { font-size: 31px; }
   .transformation-lab { margin: 0 0 88px; }
   .transformation-lab__copy { min-height: 460px; padding: 34px 20px; }
-  .transformation-lab__copy h2 { font-size: 63px; }
+  .transformation-lab__copy h2 { font-size: 34px; }
   .comparison { min-height: 480px; }
   .area-section { gap: 55px; }
   .area-section .section-title,
@@ -1781,17 +1822,30 @@ main { min-height: 65vh; }
   .area-diagram__legend > div:last-of-type { border-bottom: 0; }
   .area-diagram__legend > small { text-align: left; }
   .closing-section { min-height: 520px; padding-block: 90px; }
-  .closing-section h2 { font-size: clamp(61px, 18vw, 86px); }
+  .closing-section h2 { font-size: clamp(32px, 10vw, 52px); }
 
   .page-intro { min-height: 560px; padding-top: 70px; display: block; }
   .page-intro > .technical-label { margin-bottom: 38px; }
-  .page-intro h1 { font-size: clamp(72px, 21vw, 104px); }
+  .page-intro h1 { font-size: clamp(36px, 12vw, 62px); }
   .page-intro__text { margin: 52px 0 0 17%; font-size: 14px; }
   .page-intro__axis::before { left: 17%; }
   .page-intro__axis i:nth-child(1) { left: calc(17% - 6px); }
   .page-intro__axis i:nth-child(2) { left: 72%; }
   .company-story { gap: 60px; }
-  .company-story__heading h2 { font-size: 61px; }
+  .company-story__heading h2 { font-size: 34px; }
+
+  /* Estas duas só tinham regra base, com piso de clamp em 54 e 40px —
+     grandes demais no celular independentemente da largura. */
+  .service-layers__active h2 { font-size: 32px; }
+  .process-blueprint__stage h3 { margin-top: 64px; font-size: 30px; }
+
+  /* Quatro seções redefinem o título com piso próprio (52 a 58px), mais
+     específico que `.section-title h2` e por isso imune ao ajuste acima.
+     Todas entram na mesma escala. */
+  .materials-board .section-title h2,
+  .contact-map .section-title h2,
+  .service-method .section-title h2,
+  .area-section .section-title h2 { font-size: clamp(30px, 9.5vw, 44px); }
   .company-story__chapters article { grid-template-columns: 36px 1fr; gap: 15px; }
   .company-story__chapters p { font-size: 16px; }
   .team-dossiers { padding-block: 88px; }
@@ -1799,7 +1853,12 @@ main { min-height: 65vh; }
   .team-dossiers__grid article { padding: 20px 0 32px; border-right: 0; border-top: 1px solid var(--line-light); }
   .team-dossiers__monogram { height: 260px; }
   .principles-axis__list article { grid-template-columns: 35px 1fr; padding: 26px 0; }
-  .principles-axis__list h3 { font-size: 43px; }
+  .principles-axis__list h3 { font-size: 28px; }
+
+  /* Piso de 58px no clamp da regra base — o mesmo tamanho em qualquer
+     aparelho, do mais estreito ao mais largo. */
+  .team-dossiers__intro h2,
+  .faq-section__heading h2 { font-size: clamp(30px, 9.5vw, 44px); }
   .principles-axis__list p { grid-column: 2; }
 
   .service-method__drawing { min-height: 390px; }
@@ -1818,7 +1877,7 @@ main { min-height: 65vh; }
   .project-tile__meta > p { display: none; }
 
   .case-hero { min-height: auto; padding-top: 46px; display: flex; flex-direction: column; }
-  .case-hero__title h1 { width: 100%; font-size: clamp(74px, 21vw, 104px); }
+  .case-hero__title h1 { width: 100%; font-size: clamp(36px, 12vw, 62px); line-height: 0.9; }
   .case-hero__image { min-height: 500px; order: 2; clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%); }
   .case-hero dl { order: 3; grid-template-columns: 1fr 1fr; }
   .case-narrative { gap: 65px; }
@@ -1834,7 +1893,7 @@ main { min-height: 65vh; }
   .case-comparison > div:first-child { min-height: 330px; padding: 42px 20px; }
   .case-comparison h2 { margin-top: 70px; font-size: 65px; }
   .next-case { padding-block: 80px; }
-  .next-case a { font-size: clamp(60px, 17vw, 86px); }
+  .next-case a { font-size: clamp(28px, 9vw, 46px); }
   .next-case .arrow { width: 38px; height: 38px; }
 
   .brief-builder { padding-top: 55px; }
