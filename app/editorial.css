@@ -18,7 +18,7 @@
 .section-title__rail span {
   display: block;
   margin-bottom: 50px;
-  color: var(--copper-dark);
+  color: var(--copper-label);
   font: 600 15px var(--display);
   letter-spacing: 0.1em;
 }
@@ -161,7 +161,7 @@
   background: rgba(23, 25, 22, 0.9);
   color: var(--paper);
 }
-.home-hero__caption > span { color: var(--copper-dark); font: 600 16px var(--display); }
+.home-hero__caption > span { color: var(--copper-label); font: 600 16px var(--display); }
 .home-hero__caption strong { display: block; font: 600 20px var(--display); letter-spacing: 0.04em; text-transform: uppercase; }
 .home-hero__caption small { display: block; margin-top: 2px; opacity: 0.58; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
 .home-hero__specs {
@@ -277,7 +277,7 @@
   transition: color 0.3s ease, padding 0.3s ease, background 0.3s ease;
 }
 .project-directory li.is-active a { padding-inline: 15px; background: var(--graphite); color: var(--paper); }
-.project-directory a > span { color: var(--copper-dark); font: 600 14px var(--display); }
+.project-directory a > span { color: var(--copper-label); font: 600 14px var(--display); }
 .project-directory strong { display: block; font: 600 clamp(24px, 2.3vw, 38px)/0.95 var(--display); text-transform: uppercase; }
 .project-directory small {
   display: block;
@@ -311,7 +311,7 @@
   overflow: hidden;
   border-right: 1px solid var(--line-light);
 }
-.service-layers__active > span { color: var(--copper-dark); font: 600 16px var(--display); }
+.service-layers__active > span { color: var(--copper-label); font: 600 16px var(--display); }
 .service-layers__active h2 {
   position: relative;
   z-index: 2;
@@ -359,7 +359,7 @@
 .service-layers__list button:hover,
 .service-layers__list button:focus-visible,
 .service-layers__list button.is-active { padding-left: 33px; background: var(--paper); color: var(--ink); }
-.service-layers__list button > span { color: var(--copper-dark); font: 600 14px var(--display); }
+.service-layers__list button > span { color: var(--copper-label); font: 600 14px var(--display); }
 .service-layers__list strong { font: 600 clamp(23px, 2.2vw, 35px)/1 var(--display); letter-spacing: 0.01em; text-transform: uppercase; }
 .service-layers__list i { font-style: normal; font-size: 20px; font-weight: 300; }
 .service-layers__link { margin-top: 46px; display: flex; justify-content: flex-end; }
@@ -417,7 +417,7 @@
 .process-blueprint__rail button:hover,
 .process-blueprint__rail button:focus-visible,
 .process-blueprint__rail button.is-active { background: var(--mineral); color: white; }
-.process-blueprint__rail span { color: var(--copper-dark); font: 600 13px var(--display); }
+.process-blueprint__rail span { color: var(--copper-label); font: 600 13px var(--display); }
 .process-blueprint__rail strong { max-width: 230px; font: 600 clamp(27px, 2.6vw, 40px)/0.92 var(--display); text-transform: uppercase; }
 
 /* Transformation */

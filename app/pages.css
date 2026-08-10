@@ -40,16 +40,22 @@
 .principles-axis__list span { color: var(--copper-dark); font: 600 14px var(--display); }
 .principles-axis__list h3 { margin: 0; font: 600 clamp(38px, 4vw, 64px)/0.9 var(--display); text-transform: uppercase; }
 .principles-axis__list p { max-width: 460px; margin: 0; color: rgba(23, 25, 22, 0.63); font-size: 14px; }
-/* Superficies escuras: o cobre fechado nao se ve sobre elas. Agrupado por
-   secao em vez de por elemento porque a regra e da superficie, nao do texto
-   — qualquer rotulo novo nessas secoes ja nasce legivel. */
-.project-directory li.is-active a > span,
-.section-title__rail span,
-.service-layers__list button > span,
-.service-layers__active > span,
-.faq-section__heading .technical-label,
-.process-blueprint__rail span {
-  color: var(--copper-on-dark);
+/* Superfície escura: o rótulo em cobre passa a usar o tom aberto. Isto é
+   uma troca de VARIÁVEL, não de cor de elemento — os mesmos componentes
+   (`section-title__rail`, os números das listas) aparecem em seções claras e
+   escuras, e a primeira tentativa, que pintava o componente, consertava o
+   escuro e quebrava o claro. Quem sabe qual cobre usar é a superfície. */
+.home-hero__specs,
+.service-layers,
+.closing-section,
+.faq-section,
+.form-progress,
+.form-success,
+.timeline-band,
+.case-comparison,
+.project-directory li.is-active a,
+.project-filters button.is-active {
+  --copper-label: var(--copper-on-dark);
 }
 
 /* Sobre o verde --mineral nenhum tom da família cobre passa: o

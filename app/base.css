@@ -21,6 +21,9 @@
      (2,31:1); o --copper puro tambem nao chega la (3,83:1). Este da 5,24:1
      e continua sendo cobre, que e o acento da marca. */
   --copper-on-dark: #cd7f52;
+  /* Qual cobre um rótulo deve usar. O padrão é o de superfície clara; cada
+     seção escura redefine este valor para si, e os rótulos herdam. */
+  --copper-label: var(--copper-dark);
   --mineral: #40534a;
   --line: rgba(23, 25, 22, 0.19);
   --line-light: rgba(250, 248, 243, 0.2);
@@ -78,7 +81,7 @@ main { min-height: 65vh; }
 
 .technical-label {
   margin: 0;
-  color: var(--copper-dark);
+  color: var(--copper-label);
   font-size: 10px;
   font-weight: 750;
   letter-spacing: 0.18em;
