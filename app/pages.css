@@ -40,6 +40,18 @@
 .principles-axis__list span { color: var(--copper-dark); font: 600 14px var(--display); }
 .principles-axis__list h3 { margin: 0; font: 600 clamp(38px, 4vw, 64px)/0.9 var(--display); text-transform: uppercase; }
 .principles-axis__list p { max-width: 460px; margin: 0; color: rgba(23, 25, 22, 0.63); font-size: 14px; }
+/* Superficies escuras: o cobre fechado nao se ve sobre elas. Agrupado por
+   secao em vez de por elemento porque a regra e da superficie, nao do texto
+   — qualquer rotulo novo nessas secoes ja nasce legivel. */
+.project-directory li.is-active a > span,
+.section-title__rail span,
+.service-layers__list button > span,
+.service-layers__active > span,
+.faq-section__heading .technical-label,
+.process-blueprint__rail span {
+  color: var(--copper-on-dark);
+}
+
 /* Sobre o verde --mineral nenhum tom da família cobre passa: o
    --copper-dark mede 1,21:1 e o --copper 1,93:1. É limite da combinação, não
    de calibragem — só um tom claro resolve, e o --stone mantém o ar sóbrio

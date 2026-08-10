@@ -16,6 +16,11 @@
   --concrete: #96988f;
   --copper: #b7653b;
   --copper-dark: #88472b;
+  /* O mesmo cobre, aberto para uso sobre superficie escura. O --copper-dark
+     acima e correto sobre claro (6,15:1 no marfim) e cego sobre o grafite
+     (2,31:1); o --copper puro tambem nao chega la (3,83:1). Este da 5,24:1
+     e continua sendo cobre, que e o acento da marca. */
+  --copper-on-dark: #cd7f52;
   --mineral: #40534a;
   --line: rgba(23, 25, 22, 0.19);
   --line-light: rgba(250, 248, 243, 0.2);
