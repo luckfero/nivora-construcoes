@@ -38,7 +38,17 @@ export function CompanyPage({ locale }: { locale: Locale }) {
           ))}
         </div>
       </section>
-      <section className="timeline-band">
+      {/* `tabIndex` e `role` não são enfeite: a faixa tem `overflow-x: auto`
+          e uma lista de 1050px, então em tela estreita parte do conteúdo só
+          existe rolando de lado. Sem foco, quem navega por teclado não
+          alcança o que está fora — é a regra `scrollable-region-focusable`
+          da WCAG, e foi o único achado estrutural da varredura. */}
+      <section
+        className="timeline-band"
+        tabIndex={0}
+        role="region"
+        aria-label={content.company[locale].timelineLabel}
+      >
         <ol>
           {company.timeline.map(([year, label]) => (
             <li key={year}>
