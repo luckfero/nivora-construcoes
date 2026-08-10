@@ -89,6 +89,7 @@ const CABECALHOS_ESPERADOS = {
   "cross-origin-opener-policy": "same-origin",
   "permissions-policy": "camera=(), geolocation=(), microphone=()",
   "referrer-policy": "strict-origin-when-cross-origin",
+  "strict-transport-security": "max-age=86400",
   "x-content-type-options": "nosniff",
   "x-frame-options": "DENY",
 };
@@ -178,4 +179,37 @@ test("o HTML servido não esconde nada: a trava do reveal só entra pelo JS", as
        `IntersectionObserver` existia. */
     assert.doesNotMatch(html, /class="[^"]*\bmotion-ready\b/, rota);
   }
+});
+
+test("HTTP puro não entrega página: redireciona para HTTPS", async () => {
+  const wUrl = new URL("../dist/server/index.js", import.meta.url);
+  wUrl.searchParams.set("test", `${process.pid}-${Date.now()}-tls`);
+  const { default: w } = await import(wUrl.href);
+
+  const pedir = (endereco, cabecalhos = {}) =>
+    w.fetch(
+      new Request(endereco, { headers: { accept: "text/html", ...cabecalhos } }),
+      { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
+      { waitUntil() {}, passThroughOnException() {} },
+    );
+
+  /* Visitante em texto aberto: 301 para o mesmo caminho em HTTPS. */
+  const aberto = await pedir("http://nivora.test/pt?x=1");
+  assert.equal(aberto.status, 301);
+  assert.equal(aberto.headers.get("location"), "https://nivora.test/pt?x=1");
+
+  /* A borda da Cloudflare entrega o esquema original no CF-Visitor. Ele
+     manda mais que o endereço: numa borda que já terminou o TLS, a URL
+     chega como https mesmo quando o visitante veio de http. */
+  const viaBorda = await pedir("https://nivora.test/", { "CF-Visitor": '{"scheme":"http"}' });
+  assert.equal(viaBorda.status, 301, "CF-Visitor http deve redirecionar mesmo com URL https");
+
+  /* E o contrário: quem já está em HTTPS **não** pode ser redirecionado,
+     senão o destino vira http de novo e o site entra em laço infinito. */
+  const seguro = await pedir("https://nivora.test/", { "CF-Visitor": '{"scheme":"https"}' });
+  assert.notEqual(seguro.status, 301, "requisição já segura não pode redirecionar");
+
+  /* localhost fica de fora: é onde rodam o dev e estes testes. */
+  const local = await pedir("http://localhost/pt");
+  assert.notEqual(local.status, 301, "localhost não pode redirecionar");
 });
