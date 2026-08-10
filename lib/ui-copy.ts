@@ -1,0 +1,60 @@
+/**
+ * Rótulos de interface nas três línguas.
+ *
+ * Separado de `content.ts`, que guarda o texto editorial do site. Aqui
+ * ficam só os nomes de coisas — navegação, rótulos de acessibilidade,
+ * exemplos de campo. Sete componentes leem daqui.
+ */
+export const uiCopy = {
+  pt: {
+    home: "início",
+    nav: "Navegação principal",
+    mobileNav: "Navegação móvel",
+    footer: "Rodapé",
+    stats: "Indicadores conceituais",
+    featured: "Projeto em foco",
+    directory: "Diretório de projetos",
+    projectImage: "Imagem do projeto",
+    gallery: "Galeria do projeto",
+    team: "Equipe",
+    portrait: "Retrato de",
+    openProject: "Abrir projeto",
+    details: "Ficha da obra",
+    areaExample: "Ex.: 280 m²",
+    startExample: "Ex.: março de 2027",
+  },
+  es: {
+    home: "inicio",
+    nav: "Navegación principal",
+    mobileNav: "Navegación móvil",
+    footer: "Pie de página",
+    stats: "Indicadores conceptuales",
+    featured: "Proyecto destacado",
+    directory: "Directorio de proyectos",
+    projectImage: "Imagen del proyecto",
+    gallery: "Galería del proyecto",
+    team: "Equipo",
+    portrait: "Retrato de",
+    openProject: "Abrir proyecto",
+    details: "Ficha de obra",
+    areaExample: "Ej.: 280 m²",
+    startExample: "Ej.: marzo de 2027",
+  },
+  en: {
+    home: "home",
+    nav: "Primary navigation",
+    mobileNav: "Mobile navigation",
+    footer: "Footer",
+    stats: "Conceptual indicators",
+    featured: "Featured project",
+    directory: "Project directory",
+    projectImage: "Project image",
+    gallery: "Project gallery",
+    team: "Team",
+    portrait: "Portrait of",
+    openProject: "Open project",
+    details: "Project details",
+    areaExample: "E.g. 280 m²",
+    startExample: "E.g. March 2027",
+  },
+} as const;
