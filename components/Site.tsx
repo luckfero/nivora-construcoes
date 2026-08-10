@@ -93,6 +93,14 @@ function Arrow({ direction = "right" }: { direction?: "right" | "down" | "left" 
   );
 }
 
+function DiagonalArrow() {
+  return (
+    <svg className="arrow arrow--diagonal" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M8 16 16 8M9 8h7v7" />
+    </svg>
+  );
+}
+
 function ButtonLink({
   href,
   children,
@@ -1033,7 +1041,11 @@ function ProjectForm({ locale }: { locale: Locale }) {
               {copy.types.map((item) => (
                 <label key={item}>
                   <input type="radio" name="type" value={item} checked={data.type === item} onChange={() => update("type", item)} />
-                  <span>{item}<i>↗</i></span>
+                  {/* Era o caractere U+2197. O iOS renderiza essa seta na
+                      apresentação de emoji — vinha um quadradinho azul no
+                      lugar do traço fino do resto do site. Vetor não tem
+                      apresentação alternativa. */}
+                  <span>{item}<DiagonalArrow /></span>
                 </label>
               ))}
             </div>

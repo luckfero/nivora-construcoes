@@ -1257,7 +1257,17 @@ main { min-height: 65vh; }
   clip-path: polygon(8% 0, 100% 0, 96% 96%, 0 84%);
   background: var(--stone);
 }
-.case-hero__image img { width: 100%; height: 100%; object-fit: cover; }
+/* `height: 100%` não resolve contra `min-height` — e o contêiner só tem
+   `min-height`. Sem altura definida, a foto voltava à proporção natural:
+   167px de imagem dentro de 500px de caixa, com o resto de bege. O
+   posicionamento absoluto preenche a caixa seja qual for a altura. */
+.case-hero__image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .case-hero__image .coordinate { position: absolute; right: 22px; top: 20px; color: white; }
 .case-hero dl {
   grid-column: 1 / -1;
@@ -1623,6 +1633,19 @@ main { min-height: 65vh; }
   .header-tools { gap: 14px; }
   .header-tools > .language-switch { display: none; }
   .menu-toggle { display: block; }
+  /* ---- Por que o desfoque sai no celular ----
+     `backdrop-filter` faz o cabeçalho virar bloco de contenção para
+     descendentes `position: fixed`. O menu é fixed e mora dentro do
+     `<header>`: com o desfoque, o `inset: var(--header) 0 0` deixava de
+     se medir contra a janela e passava a se medir contra o próprio
+     cabeçalho. O painel ficava com 75px de altura em vez de 782, e os
+     links caíam sobre a página — o "fundo transparente".
+
+     O desfoque é refinamento de desktop; no celular custava o menu
+     inteiro, e ainda é dos efeitos mais caros de compor num aparelho
+     modesto. */
+  .site-header { backdrop-filter: none; }
+
   .mobile-nav {
     position: fixed;
     z-index: 95;
