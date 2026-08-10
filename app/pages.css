@@ -58,6 +58,15 @@
   --copper-label: var(--copper-on-dark);
 }
 
+/* Ilha clara dentro de seção escura. `.service-layers` é escura, mas o item
+   ativo da lista tem fundo `--paper` — ele herdava o cobre aberto da seção e
+   caía sobre claro. A superfície volta a mandar aqui dentro também.
+   `.process-blueprint__rail` ativo é verde `--mineral`, onde nem o cobre
+   aberto passa: ali o texto já é branco por regra própria. */
+.service-layers__list button.is-active {
+  --copper-label: var(--copper-dark);
+}
+
 /* Sobre o verde --mineral nenhum tom da família cobre passa: o
    --copper-dark mede 1,21:1 e o --copper 1,93:1. É limite da combinação, não
    de calibragem — só um tom claro resolve, e o --stone mantém o ar sóbrio
