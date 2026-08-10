@@ -1,0 +1,373 @@
+/**
+ * Todas as media queries, na ordem original.
+ * Fica por ultimo de proposito: e o que sobrescreve o resto.
+ */
+
+/* Responsive */
+@media (max-width: 1280px) {
+  .header-grid { grid-template-columns: minmax(210px, 1fr) auto minmax(220px, 1fr); }
+  .desktop-nav a { min-width: 89px; padding-inline: 13px; }
+  .header-cta { display: none; }
+  .home-hero h1 { font-size: clamp(72px, 8.8vw, 118px); }
+  .home-hero__specs { grid-template-columns: 1.25fr repeat(3, 0.75fr); }
+  .service-layers__board,
+  .process-blueprint__layout { grid-template-columns: 0.85fr 1.15fr; }
+  .project-observatory__body { grid-template-columns: 1.05fr 0.95fr; }
+}
+
+/* 1100 e nao 1020: o iPad Pro de 12,9" em pe tem 1024px de largura e caía
+   4px fora, recebendo o layout de desktop numa tela estreita demais para
+   ele — cinco rotas transbordavam. */
+@media (max-width: 1100px) {
+  :root { --header: 70px; }
+  .desktop-nav { display: none; }
+  .header-grid { grid-template-columns: 1fr auto; }
+  .header-tools { gap: 14px; }
+  .header-tools > .language-switch { display: none; }
+  .menu-toggle { display: block; }
+  /* ---- Por que o desfoque sai no celular ----
+     `backdrop-filter` faz o cabeçalho virar bloco de contenção para
+     descendentes `position: fixed`. O menu é fixed e mora dentro do
+     `<header>`: com o desfoque, o `inset: var(--header) 0 0` deixava de
+     se medir contra a janela e passava a se medir contra o próprio
+     cabeçalho. O painel ficava com 75px de altura em vez de 782, e os
+     links caíam sobre a página — o "fundo transparente".
+
+     O desfoque é refinamento de desktop; no celular custava o menu
+     inteiro, e ainda é dos efeitos mais caros de compor num aparelho
+     modesto. */
+  .site-header { backdrop-filter: none; }
+
+  .mobile-nav {
+    position: fixed;
+    z-index: 95;
+    inset: var(--header) 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 45px var(--pad) 30px;
+    background: var(--graphite);
+    color: var(--paper);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+  }
+  .mobile-nav.is-open { opacity: 1; visibility: visible; transform: none; }
+  .mobile-nav nav { border-top: 1px solid var(--line-light); }
+  .mobile-nav nav a {
+    min-height: 83px;
+    display: grid;
+    grid-template-columns: 45px 1fr auto;
+    align-items: center;
+    border-bottom: 1px solid var(--line-light);
+    font: 600 clamp(30px, 6vw, 52px)/1 var(--display);
+    text-transform: uppercase;
+  }
+  .mobile-nav nav small { color: #dfa27e; font-size: 10px; }
+  .mobile-nav__footer { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; }
+  .mobile-nav__footer p { max-width: 400px; margin: 0; color: rgba(250, 248, 243, 0.55); font-size: 12px; }
+  .mobile-nav .language-switch a { color: var(--paper); }
+
+  .section-title { grid-template-columns: 105px 1fr; gap: 35px; }
+  .section-title__copy { display: block; }
+  .section-title__copy > p { margin-top: 28px; }
+  .home-hero__grid { min-height: auto; padding-top: 60px; }
+  .home-hero__copy { grid-column: 1 / 8; padding-right: 0; }
+  .home-hero__visual { grid-column: 6 / 13; min-height: 610px; }
+  .home-hero h1 { width: 125%; font-size: clamp(68px, 11vw, 108px); }
+  .home-hero__lead { max-width: 440px; }
+  .home-hero__specs { grid-template-columns: repeat(3, 1fr); padding-top: 28px; padding-bottom: 30px; }
+  .home-hero__specs > p { grid-column: 1 / -1; margin-bottom: 20px; }
+  .home-hero__specs > div:first-of-type { border-left: 0; padding-left: 0; }
+  .home-hero__specs > small { display: none; }
+
+  .project-observatory__body { grid-template-columns: 1fr; }
+  .project-observatory__media { position: relative; top: auto; min-height: 600px; }
+  .project-directory a { min-height: 95px; }
+  .service-layers__board,
+  .process-blueprint__layout,
+  .transformation-lab,
+  .area-section,
+  .company-story,
+  .team-dossiers,
+  .service-method,
+  .case-narrative,
+  .materials-board,
+  .contact-map,
+  .faq-section { grid-template-columns: 1fr; }
+  .service-layers__active { min-height: 480px; border-right: 0; border-bottom: 1px solid var(--line-light); }
+  .process-blueprint__stage { min-height: 440px; border-right: 0; border-bottom: 1px solid var(--ink); }
+  .transformation-lab { margin-inline: var(--pad); }
+  .transformation-lab__copy { min-height: 440px; border-right: 0; border-bottom: 1px solid var(--line-light); }
+  .area-section { gap: 70px; }
+  .company-story__heading { position: static; }
+  .team-dossiers__grid { max-width: 100%; }
+  .team-dossiers__monogram { height: 240px; }
+  .service-method__drawing { min-height: 480px; }
+  .case-hero { grid-template-columns: 0.75fr 1.25fr; }
+  .case-hero__title h1 { width: 135%; font-size: clamp(76px, 11vw, 120px); }
+  .case-hero__image { min-height: 570px; }
+  .case-comparison { margin-inline: var(--pad); grid-template-columns: 1fr; }
+  .case-comparison > div:first-child { min-height: 360px; }
+  .project-form { grid-template-columns: 245px 1fr; }
+  .footer-statement,
+  .footer-grid {
+    grid-template-columns: minmax(155px, 0.8fr) minmax(290px, 1.3fr) minmax(155px, 0.8fr);
+    gap: 28px;
+  }
+}
+
+@media (max-width: 720px) {
+  :root { --pad: 20px; }
+  body { font-size: 15px; }
+  .brand__type strong { font-size: 21px; }
+  .brand__mark { width: 31px; height: 31px; }
+  .header-grid { gap: 10px; }
+  .shell-section { padding-block: 88px; }
+  .section-title { display: block; margin-bottom: 52px; }
+  .section-title__rail { width: 118px; margin-bottom: 38px; }
+  .section-title__rail span { margin-bottom: 26px; }
+  /* Escala de titulo no celular. Os pisos dos clamp eram de 50 a 76px:
+     num aparelho de 393px isso rendia titulos de 59 a 82px, grandes
+     demais para ler de uma vez. A hierarquia se mantem — h1 de pagina
+     acima do h2 de secao — so que numa faixa que cabe na mao. */
+  .section-title h2 { font-size: clamp(30px, 9.5vw, 50px); }
+
+  /* Estas quatro tinham tamanho fixo em pixels e nenhum ajuste para
+     celular — ficavam em 57 a 63px em qualquer aparelho, do mais estreito
+     ao mais largo. Entram na mesma escala das demais. */
+  .section-title__copy > p { font-size: 14px; }
+
+  .home-hero__grid {
+    display: flex;
+    flex-direction: column;
+    padding: 48px var(--pad) 0;
+  }
+  .home-hero__grid::before { left: 22%; }
+  .home-hero__grid::after { top: 21%; }
+  /* `min-width: 0` é o que impede uma palavra longa de esticar a coluna.
+     Item de flex não encolhe abaixo do próprio conteúdo mínimo — e o
+     mínimo aqui é a maior palavra do título. Com o corpo em 20vw,
+     "TRANSFORMAR." media 397px numa tela de 393 e arrastava o bloco
+     inteiro para fora, raspando as letras nas duas bordas. */
+  .home-hero__copy { order: 1; min-width: 0; }
+  .home-hero__copy .technical-label { margin-bottom: 26px; }
+
+  /* Era `clamp(64px, 20vw, 91px)`: 78,6px num aparelho de 393px, com cada
+     palavra ocupando uma linha inteira. Continua sendo um título de
+     impacto, mas agora se lê de uma vez. */
+  /* A entrelinha de 0.76 do desktop funciona em corpo grande, onde a
+     altura das maiúsculas domina. Reduzido o corpo, o til do "Ã" e a
+     cedilha passam a encostar na linha vizinha — e o português tem
+     acento em quase toda frase. 0.88 mantém o bloco compacto sem
+     colisão. */
+  .home-hero h1 { width: 100%; font-size: clamp(34px, 11.5vw, 58px); line-height: 0.88; }
+  /* 14px é corpo de legenda, não de texto corrido que alguém precisa ler
+     num celular. */
+  .home-hero__lead { margin-top: 29px; font-size: 16px; }
+  .home-hero__actions { align-items: flex-start; flex-direction: column; gap: 17px; }
+  .home-hero__visual { order: 2; width: calc(100% + var(--pad) * 2); min-height: 480px; margin: 50px calc(var(--pad) * -1) 0; }
+  .home-hero__image { inset: 0; clip-path: polygon(0 7%, 100% 0, 100% 93%, 0 100%); }
+  .home-hero__caption { left: 20px; right: auto; bottom: 25px; min-width: min(270px, calc(100vw - 40px)); }
+  .coordinate--top { top: 30px; right: 20px; }
+  .coordinate--side { right: 10px; }
+  .home-hero__specs { min-height: auto; grid-template-columns: 1fr 1fr; padding: 34px var(--pad) 28px; gap: 25px 0; }
+  .home-hero__specs > p { margin: 0; grid-column: 1 / -1; }
+  .home-hero__specs > div { min-height: 65px; padding-left: 18px; }
+  .home-hero__specs > div:nth-of-type(1) { padding-left: 0; border-left: 0; }
+  .home-hero__specs > div:nth-of-type(3) { padding-left: 0; border-left: 0; }
+  .home-hero__specs strong { font-size: 43px; }
+
+  .project-observatory__media { min-height: 500px; }
+  .project-directory a { grid-template-columns: 30px 1fr 18px; }
+  .project-directory a > p { display: none; }
+  .project-directory strong { font-size: 27px; }
+  .service-layers { padding-block: 88px; }
+  .service-layers__board { display: flex; flex-direction: column; }
+  .service-layers__active { min-height: 450px; padding: 35px 20px 40px; }
+  .service-layers__active h2 { margin-top: 85px; font-size: 57px; }
+  .service-layers__list button { min-height: 85px; grid-template-columns: 37px 1fr auto; padding-inline: 14px; }
+  .service-layers__list button:hover,
+  .service-layers__list button:focus-visible,
+  .service-layers__list button.is-active { padding-left: 20px; }
+  .service-layers__list strong { font-size: 25px; }
+  .process-blueprint__layout { border-left: 0; border-right: 0; }
+  .process-blueprint__stage { min-height: 440px; padding: 30px 20px; }
+  .process-blueprint__rail { grid-template-columns: 1fr; }
+  .process-blueprint__rail li,
+  .process-blueprint__rail li:nth-child(even),
+  .process-blueprint__rail li:nth-last-child(-n + 2) { border-right: 0; border-bottom: 1px solid var(--line); }
+  .process-blueprint__rail li:last-child { border-bottom: 0; }
+  .process-blueprint__rail button { min-height: 110px; flex-direction: row; align-items: center; }
+  .process-blueprint__rail strong { font-size: 31px; }
+  .transformation-lab { margin: 0 0 88px; }
+  .transformation-lab__copy { min-height: 460px; padding: 34px 20px; }
+  .transformation-lab__copy h2 { font-size: 34px; }
+  .comparison { min-height: 480px; }
+  .area-section { gap: 55px; }
+  .area-section .section-title,
+  .contact-map .section-title { display: block; }
+  .area-diagram { box-shadow: 9px 9px 0 rgba(64, 83, 74, 0.08); }
+  .area-diagram__header { min-height: 72px; padding: 14px; }
+  .area-diagram__header small { max-width: 110px; text-align: right; }
+  .area-diagram__canvas { padding: 0; }
+  .area-diagram__legend { grid-template-columns: 1fr; }
+  .area-diagram__legend > div {
+    min-height: 65px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .area-diagram__legend > div:last-of-type { border-bottom: 0; }
+  .area-diagram__legend > small { text-align: left; }
+  .closing-section { min-height: 520px; padding-block: 90px; }
+  .closing-section h2 { font-size: clamp(32px, 10vw, 52px); }
+
+  .page-intro { min-height: 560px; padding-top: 70px; display: block; }
+  .page-intro > .technical-label { margin-bottom: 38px; }
+  .page-intro h1 { font-size: clamp(36px, 12vw, 62px); }
+  .page-intro__text { margin: 52px 0 0 17%; font-size: 14px; }
+  .page-intro__axis::before { left: 17%; }
+  .page-intro__axis i:nth-child(1) { left: calc(17% - 6px); }
+  .page-intro__axis i:nth-child(2) { left: 72%; }
+  .company-story { gap: 60px; }
+  .company-story__heading h2 { font-size: 34px; }
+
+  /* Estas duas só tinham regra base, com piso de clamp em 54 e 40px —
+     grandes demais no celular independentemente da largura. */
+  .service-layers__active h2 { font-size: 32px; }
+  .process-blueprint__stage h3 { margin-top: 64px; font-size: 30px; }
+
+  /* Quatro seções redefinem o título com piso próprio (52 a 58px), mais
+     específico que `.section-title h2` e por isso imune ao ajuste acima.
+     Todas entram na mesma escala. */
+  .materials-board .section-title h2,
+  .contact-map .section-title h2,
+  .service-method .section-title h2,
+  .area-section .section-title h2 { font-size: clamp(30px, 9.5vw, 44px); }
+  .company-story__chapters article { grid-template-columns: 36px 1fr; gap: 15px; }
+  .company-story__chapters p { font-size: 16px; }
+  .team-dossiers { padding-block: 88px; }
+  .team-dossiers__grid { grid-template-columns: 1fr; border-top: 0; }
+  .team-dossiers__grid article { padding: 20px 0 32px; border-right: 0; border-top: 1px solid var(--line-light); }
+  .team-dossiers__monogram { height: 260px; }
+  .principles-axis__list article { grid-template-columns: 35px 1fr; padding: 26px 0; }
+  .principles-axis__list h3 { font-size: 28px; }
+
+  /* Piso de 58px no clamp da regra base — o mesmo tamanho em qualquer
+     aparelho, do mais estreito ao mais largo. */
+  .team-dossiers__intro h2,
+  .faq-section__heading h2 { font-size: clamp(30px, 9.5vw, 44px); }
+  .principles-axis__list p { grid-column: 2; }
+
+  .service-method__drawing { min-height: 390px; }
+  .service-method .section-title { display: block; }
+  .project-filters { margin-bottom: 55px; }
+  .project-archive__grid { display: block; }
+  .project-tile,
+  .project-tile--1,
+  .project-tile--2,
+  .project-tile--3,
+  .project-tile--4 { margin: 0 0 65px; }
+  .project-tile__image,
+  .project-tile--2 .project-tile__image,
+  .project-tile--4 .project-tile__image { aspect-ratio: 1.12; }
+  .project-tile__meta { grid-template-columns: 30px 1fr; }
+  .project-tile__meta > p { display: none; }
+
+  .case-hero { min-height: auto; padding-top: 46px; display: flex; flex-direction: column; }
+  .case-hero__title h1 { width: 100%; font-size: clamp(36px, 12vw, 62px); line-height: 0.9; }
+  .case-hero__image { min-height: 500px; order: 2; clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%); }
+  .case-hero dl { order: 3; grid-template-columns: 1fr 1fr; }
+  .case-narrative { gap: 65px; }
+  .case-narrative__lead > p { font-size: 45px; }
+  .case-narrative__decisions article { grid-template-columns: 38px 1fr; }
+  .case-narrative__decisions p { grid-column: 2; }
+  .case-gallery { grid-template-columns: 1fr; padding-bottom: 88px; }
+  .case-gallery figure:first-child { min-height: 480px; }
+  .case-gallery figure:nth-child(2) { margin-top: 0; }
+  .case-gallery img { min-height: 390px; }
+  .materials-board { gap: 55px; }
+  .case-comparison { margin: 0 0 88px; }
+  .case-comparison > div:first-child { min-height: 330px; padding: 42px 20px; }
+  .case-comparison h2 { margin-top: 70px; font-size: 65px; }
+  .next-case { padding-block: 80px; }
+  .next-case a { font-size: clamp(28px, 9vw, 46px); }
+  .next-case .arrow { width: 38px; height: 38px; }
+
+  .brief-builder { padding-top: 55px; }
+  .demo-notice { margin-left: 0; }
+  .project-form { display: block; }
+  .form-progress { padding: 25px 20px; }
+  .form-progress > p { margin-bottom: 20px; }
+  .form-progress ol { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .form-progress li { display: block; padding: 10px 4px; border-bottom: 0; font-size: 10px; }
+  .form-progress li span { margin-bottom: 7px; }
+  .form-panel { min-height: 650px; padding: 42px 20px 28px; }
+  .form-panel legend { font-size: 55px; }
+  .choice-grid,
+  .field-grid { grid-template-columns: 1fr; }
+  .field-wide { grid-column: auto; }
+  .form-review { grid-template-columns: 1fr; }
+  .form-review dl { grid-template-columns: 1fr; }
+  .form-actions { justify-content: space-between; }
+  .form-actions button { padding-inline: 15px; }
+  .form-success { min-height: 580px; padding: 55px 20px; }
+  .contact-map { gap: 55px; }
+  .contact-email { flex-direction: column; }
+  .faq-section { padding-block: 88px; gap: 50px; }
+  .faq-list summary { grid-template-columns: 35px 1fr auto; font-size: 22px; }
+  .faq-list details p { margin-left: 55px; }
+
+  .privacy-ledger article { grid-template-columns: 35px 1fr; padding: 28px 0; }
+  .privacy-ledger article p { grid-column: 2; }
+  .footer-statement,
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-statement { gap: 36px; }
+  .footer-statement .action-link,
+  .footer-grid > div { grid-column: auto; justify-self: start; }
+  .footer-statement > p,
+  .concept-note { justify-self: center; }
+  .footer-grid > div { text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+  .motion-ready [data-reveal] { opacity: 1; transform: none; }
+}
+
+/* ---- Transição entre páginas ----
+   Aberta por components/ViewTransitions.tsx no clique de um link interno.
+   O CSS só descreve como uma tela substitui a outra.
+
+   Deslocamento horizontal em vez de vertical: a navegação da Nívora é
+   lateral — o cabeçalho numera as seções 01 a 04 na horizontal — então a
+   troca acompanha essa leitura. */
+::view-transition-old(root) {
+  animation: pagina-sai 200ms cubic-bezier(.65, 0, .35, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: pagina-entra 460ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes pagina-sai {
+  to { opacity: 0; transform: translateX(-14px); }
+}
+
+@keyframes pagina-entra {
+  from { opacity: 0; transform: translateX(22px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none; }
+}

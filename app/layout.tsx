@@ -6,7 +6,16 @@ import "@fontsource/barlow-condensed/700.css";
 import "@fontsource/cormorant-garamond/latin-400.css";
 import "@fontsource/cormorant-garamond/latin-500.css";
 import "@fontsource/cormorant-garamond/latin-600.css";
-import "./globals.css";
+/* A ordem destes imports É a cascata. Foram partidos em intervalos
+   contíguos do arquivo original justamente para que ela permaneça
+   idêntica — o responsivo por último, que é quem sobrescreve. */
+import "./base.css";
+import "./header.css";
+import "./editorial.css";
+import "./pages.css";
+import "./forms.css";
+import "./footer.css";
+import "./responsive.css";
 
 /* Sem `metadataBase` o Next escreve o canonical como caminho relativo
    (`/pt` em vez do endereço completo). Relativo é ambíguo: o mesmo `/pt`

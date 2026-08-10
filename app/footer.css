@@ -1,0 +1,72 @@
+/**
+ * Rodape e os estados da revelacao por rolagem.
+ */
+
+/* Footer */
+.site-footer { padding: 90px var(--pad) 28px; background: var(--ink); color: var(--paper); }
+.footer-statement {
+  max-width: var(--max);
+  margin: 0 auto 85px;
+  display: grid;
+  grid-template-columns: minmax(190px, 1fr) minmax(320px, 680px) minmax(218px, 1fr);
+  align-items: center;
+  gap: 50px;
+}
+.footer-statement .action-link { justify-self: end; }
+.footer-statement > p {
+  max-width: 680px;
+  margin: 0;
+  justify-self: center;
+  color: rgba(250, 248, 243, 0.63);
+  font: 500 clamp(28px, 3vw, 45px)/1.1 var(--serif);
+  text-align: center;
+}
+.footer-grid {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding-top: 25px;
+  display: grid;
+  grid-template-columns: minmax(190px, 1fr) minmax(320px, 680px) minmax(190px, 1fr);
+  gap: 50px;
+  border-top: 1px solid var(--line-light);
+  color: rgba(250, 248, 243, 0.62);
+  font-size: 10px;
+}
+.footer-grid nav { display: flex; flex-direction: column; color: var(--paper); font-size: 11px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; }
+/* O espaçamento saiu do `gap` e virou área clicável. Os links mediam 17px
+   de altura — abaixo dos 24px mínimos e desconfortáveis de acertar no
+   dedo. O desenho é o mesmo; o que muda é o tamanho do alvo. */
+.footer-grid nav a { padding-block: 7px; }
+/* O aviso de que a empresa é fictícia. É a informação mais importante da
+   página para quem chega sem contexto, e estava no menor corpo do site.
+   Discreto continua sendo — não é destaque, é rodapé —, mas em tamanho
+   que se lê sem esforço. */
+.concept-note {
+  max-width: 680px;
+  margin: 0;
+  justify-self: center;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.footer-grid > div { text-align: right; }
+.footer-grid > div p { margin: 0 0 7px; }
+/* Mesmo motivo: o link de privacidade media 14px de altura. */
+.footer-grid > div a { display: inline-block; padding-block: 6px; }
+.footer-grid a:hover { color: white; }
+
+/* Reveal */
+.motion-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.75s ease, transform 0.75s cubic-bezier(.22, 1, .36, 1);
+}
+.motion-ready [data-reveal].is-visible { opacity: 1; transform: none; }
+@keyframes hero-reveal {
+  from { opacity: 0; transform: scale(1.035) translateX(25px); clip-path: inset(0 0 0 100%); }
+  to { opacity: 1; transform: none; clip-path: inset(0); }
+}
+@keyframes image-swap {
+  from { opacity: 0; transform: scale(1.03); }
+  to { opacity: 1; transform: none; }
+}

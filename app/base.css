@@ -1,0 +1,158 @@
+/**
+ * Variaveis, reset e elementos basicos.
+ * Precisa vir primeiro: o `@import` do Tailwind e os tokens que todo o
+ * resto consome moram aqui.
+ */
+
+@import "tailwindcss";
+
+:root {
+  --ink: #171916;
+  --graphite: #202321;
+  --graphite-2: #2b302c;
+  --ivory: #f3f0e8;
+  --paper: #faf8f3;
+  --stone: #d7d0c4;
+  --concrete: #96988f;
+  --copper: #b7653b;
+  --copper-dark: #88472b;
+  --mineral: #40534a;
+  --line: rgba(23, 25, 22, 0.19);
+  --line-light: rgba(250, 248, 243, 0.2);
+  --pad: clamp(20px, 4vw, 68px);
+  --max: 1680px;
+  --header: 78px;
+  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --serif: "Cormorant Garamond", Georgia, serif;
+  --sans: "Manrope Variable", "Manrope", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+/* Barra de rolagem oculta a pedido — decisão estética consciente. O custo é
+   perder o indicador de posição na página; a rolagem por roda, toque e
+   teclado continua intacta. */
+html { scroll-behavior: smooth; background: var(--ivory); scrollbar-width: none; }
+html::-webkit-scrollbar,
+body::-webkit-scrollbar { width: 0; height: 0; display: none; }
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  text-rendering: optimizeLegibility;
+}
+body.nav-open { overflow: hidden; }
+::selection { background: var(--copper); color: white; }
+img { display: block; max-width: 100%; }
+
+/* `picture` sai do fluxo para que o `img` continue sendo o filho que as
+   regras de layout esperam. Sem isso o elemento é `inline` e a caixa dele
+   briga com as proporções escritas para o `img`. */
+picture { display: contents; }
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { color: inherit; font: inherit; }
+button { cursor: pointer; }
+h1, h2, h3, p { margin-top: 0; }
+main { min-height: 65vh; }
+
+.skip-link {
+  position: fixed;
+  z-index: 999;
+  top: 10px;
+  left: 10px;
+  transform: translateY(-150%);
+  padding: 11px 16px;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+}
+.skip-link:focus { transform: translateY(0); }
+:focus-visible { outline: 2px solid var(--copper); outline-offset: 4px; }
+
+.technical-label {
+  margin: 0;
+  color: var(--copper-dark);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.technical-index {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+.coordinate {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.shell-section {
+  max-width: var(--max);
+  margin-inline: auto;
+  padding: clamp(100px, 11vw, 180px) var(--pad);
+}
+
+.arrow {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  transition: transform 0.35s cubic-bezier(.22, 1, .36, 1);
+}
+.arrow--down { transform: rotate(90deg); }
+.arrow--left { transform: rotate(180deg); }
+.action-link,
+.inline-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  width: max-content;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.action-link {
+  min-height: 58px;
+  min-width: 218px;
+  padding: 0 20px 0 24px;
+  background: var(--copper);
+  color: white;
+  border: 1px solid var(--copper);
+  transition: background 0.3s ease, color 0.3s ease, transform 0.25s ease;
+}
+.action-link--inverted {
+  background: transparent;
+  border-color: rgba(250, 248, 243, 0.5);
+  color: var(--paper);
+}
+.inline-link {
+  padding: 10px 0;
+  border-bottom: 1px solid currentColor;
+}
+.action-link:hover,
+.action-link:focus-visible {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.action-link--inverted:hover,
+.action-link--inverted:focus-visible {
+  background: var(--paper);
+  border-color: var(--paper);
+  color: var(--ink);
+}
+.action-link:hover .arrow,
+.inline-link:hover .arrow,
+.header-cta:hover .arrow,
+.project-directory a:hover .arrow,
+.project-directory a:focus-visible .arrow,
+.next-case a:hover .arrow,
+.form-next:hover .arrow { transform: translateX(5px); }
+.action-link:active { transform: scale(0.985); }
