@@ -379,7 +379,7 @@
   background: var(--ivory);
   border-right: 1px solid var(--ink);
 }
-.process-blueprint__stage > span { color: var(--copper); font: 700 74px/1 var(--display); }
+.process-blueprint__stage > span { color: var(--copper-label); font: 700 74px/1 var(--display); }
 .process-blueprint__stage h3 { position: relative; z-index: 2; margin: 120px 0 18px; font: 600 clamp(54px, 5vw, 83px)/0.86 var(--display); text-transform: uppercase; }
 .process-blueprint__stage > p { position: relative; z-index: 2; max-width: 370px; margin: 0; color: rgba(23, 25, 22, 0.63); font-size: 14px; }
 .process-blueprint__stage > div { position: absolute; inset: 0; pointer-events: none; }

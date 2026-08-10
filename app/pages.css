@@ -67,6 +67,14 @@
   --copper-label: var(--copper-dark);
 }
 
+/* Mesma ideia, outra ilha: o passo ativo do roteiro tem fundo verde
+   `--mineral`, onde nenhum tom da família cobre chega ao mínimo (o fechado
+   dá 1,21:1 e o aberto não passa de 2,6). O `--stone` resolve com 5,37:1 e é
+   o mesmo tom já usado na seção de equipe, pelo mesmo motivo. */
+.process-blueprint__rail button.is-active {
+  --copper-label: var(--stone);
+}
+
 /* Sobre o verde --mineral nenhum tom da família cobre passa: o
    --copper-dark mede 1,21:1 e o --copper 1,93:1. É limite da combinação, não
    de calibragem — só um tom claro resolve, e o --stone mantém o ar sóbrio
@@ -155,7 +163,7 @@
 .service-method .section-title h2 { font-size: clamp(53px, 5.5vw, 87px); }
 .service-method ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
 .service-method li { display: grid; grid-template-columns: 47px 1fr; gap: 18px; padding: 20px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
-.service-method li span { color: var(--copper); font: 600 12px var(--display); }
+.service-method li span { color: var(--copper-label); font: 600 12px var(--display); }
 
 /* Projects */
 .project-archive { padding-top: 70px; }
@@ -327,7 +335,7 @@
 .materials-board .section-title h2 { font-size: clamp(58px, 6vw, 96px); }
 .materials-board ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
 .materials-board li { min-height: 100px; display: grid; grid-template-columns: 55px 1fr; align-items: center; border-bottom: 1px solid var(--line); }
-.materials-board li span { color: var(--copper); font: 600 13px var(--display); }
+.materials-board li span { color: var(--copper-label); font: 600 13px var(--display); }
 .materials-board li strong { font: 600 clamp(27px, 2.8vw, 43px)/1 var(--display); text-transform: uppercase; }
 .case-comparison {
   max-width: var(--max);
