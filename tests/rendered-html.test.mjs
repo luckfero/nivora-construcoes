@@ -52,6 +52,34 @@ for (const [pathname, marker] of routeExpectations) {
   });
 }
 
+test("o título da aba traz o nome da empresa, não o slogan", async () => {
+  /* A aba tem espaço para poucos caracteres. Enquanto a home devolvia o
+     slogan como título, o `template` compunha "Precisão para construir |
+     Nívora Construções" e o nome da empresa saía do campo visível.
+
+     São dois caminhos diferentes e é fácil corrigir só um: `/` é servido por
+     `app/page.tsx`, que usa o `title.default` do layout; `/pt`, `/es` e `/en`
+     passam pelo `generateMetadata` da rota de idioma. Aconteceu de arrumar o
+     primeiro e o segundo continuar errado, e é por isso que este teste cobre
+     os quatro. */
+  const recortarTitulo = (html) => {
+    const head = html.slice(0, html.indexOf("</head>"));
+    const achados = [...head.matchAll(/<title[^>]*>([\s\S]*?)<\/title>/gi)].map((m) => m[1]);
+    assert.equal(achados.length, 1, `esperava uma <title> na head, achei ${achados.length}`);
+    return achados[0];
+  };
+
+  for (const rota of ["/", "/pt", "/es", "/en"]) {
+    const html = await (await render(rota)).text();
+    assert.equal(recortarTitulo(html), "Nívora Construções", `título errado em ${rota}`);
+  }
+
+  /* As internas continuam compondo: é onde o template serve, porque diz
+     onde se está sem perder de quem é o site. */
+  const interna = await (await render("/pt/empresa")).text();
+  assert.equal(recortarTitulo(interna), "Empresa | Nívora Construções");
+});
+
 const localizedRoutes = {
   pt: ["", "empresa", "servicos", "projetos", "contato", "privacidade"],
   es: ["", "empresa", "servicios", "proyectos", "contacto", "privacidad"],

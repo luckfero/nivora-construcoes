@@ -38,7 +38,22 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
           ? "Conoce Nívora Construções, sus servicios, proyectos y proceso de gestión integral de obras."
           : "Discover Nívora Construções, its services, projects and integrated construction management process.";
   return {
-    title,
+    /* A home devolve o título **absoluto**, para escapar do
+       `template: "%s | Nívora Construções"` do layout.
+
+       Sem isso, o que o mapa `titles` chama de título da home é o slogan
+       ("Precisão para construir"), e o template compunha
+       "Precisão para construir | Nívora Construções". A aba do navegador tem
+       espaço para poucos caracteres, e o slogan ocupava justamente a parte
+       visível, empurrando o nome da empresa para fora.
+
+       As demais páginas continuam compondo, que é onde o template serve:
+       "Empresa | Nívora Construções" identifica a aba e diz onde se está.
+
+       Cuidado ao mexer: `/` é servido por `app/page.tsx`, que usa o
+       `title.default` do layout e **não passa por aqui**. Conferir os dois
+       caminhos, senão um fica certo e o outro não. Foi o que aconteceu. */
+    title: resolved.page === "home" ? { absolute: "Nívora Construções" } : title,
     description,
     alternates: {
       canonical: hrefFor(candidate, resolved.page, resolved.projectSlug),
