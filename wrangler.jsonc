@@ -11,6 +11,21 @@
     "nodejs_compat"
   ],
   "main": "./worker/index.ts",
+  // Domínio próprio declarado aqui, e não no painel: no deploy o wrangler
+  // cria o registro DNS e pede o certificado sozinho. `custom_domain: true`
+  // é o que faz o worker responder direto no endereço; sem essa chave o
+  // padrão seria uma rota, que exigiria configurar o DNS à mão.
+  //
+  // O endereço `nivora-construcoes.luccaoliveira123.workers.dev` continua
+  // ativo de propósito: desligar agora quebraria os links já publicados no
+  // portfólio da Varanda. Quem resolve a ambiguidade é o canonical, que
+  // passa a apontar para cá.
+  "routes": [
+    {
+      "pattern": "nivora.varandaestudioweb.com",
+      "custom_domain": true
+    }
+  ],
   "assets": {
     "directory": "dist/client",
     "not_found_handling": "none",
