@@ -142,7 +142,9 @@ test("as três línguas pedem para não indexar", async () => {
 
 test("cada rota declara um canonical absoluto e único", async () => {
   const pedir = await carregarWorker("can");
-  const SITE = "https://nivora-construcoes.luccaoliveira123.workers.dev";
+  /* Domínio próprio desde 2026-08-10. O endereço `workers.dev` continua
+     respondendo, mas o canonical precisa apontar para um só lugar, e é este. */
+  const SITE = "https://nivora.varandaestudioweb.com";
 
   const esperado = {
     /* A raiz serve a mesma home que /pt. O canonical aponta para /pt

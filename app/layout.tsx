@@ -21,8 +21,13 @@ import "./responsive.css";
    (`/pt` em vez do endereço completo). Relativo é ambíguo: o mesmo `/pt`
    existe em qualquer host, então o buscador não sabe qual endereço é o
    oficial — exatamente o que o canonical deveria resolver. */
+/* Domínio próprio desde 2026-08-10. Enquanto o padrão era o endereço do
+   worker, o canonical e a `og:image` continuavam apontando para
+   `luccaoliveira123.workers.dev` mesmo com o domínio novo funcionando — e é
+   a `og:image` que monta o cartão de pré-visualização quando o link é colado
+   no WhatsApp, que é justamente como este projeto chega a um prospect. */
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://nivora-construcoes.luccaoliveira123.workers.dev";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://nivora.varandaestudioweb.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
