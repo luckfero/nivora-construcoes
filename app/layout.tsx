@@ -32,8 +32,8 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Nívora Construções — Precisão para construir",
-    template: "%s — Nívora Construções",
+    default: "Nívora Construções",
+    template: "%s | Nívora Construções",
   },
   description: "Construção, reforma e reabilitação com gestão integral, decisões visíveis e acompanhamento próximo em São Paulo.",
   icons: {
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "pt_BR",
     siteName: "Nívora Construções",
-    title: "Nívora Construções — Precisão para construir",
+    title: "Nívora Construções",
     description: "Construção, reforma e reabilitação com gestão integral em São Paulo.",
     images: [{ url: "/images/casa-patio-alto.webp", width: 1823, height: 863, alt: "Casa Pátio Alto" }],
   },
