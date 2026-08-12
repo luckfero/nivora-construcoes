@@ -11,15 +11,18 @@
     "nodejs_compat"
   ],
   "main": "./worker/index.ts",
+  // O endereço `workers.dev` está desligado de propósito. Descobriu-se na
+  // varredura de 2026-08-11 que declarar `custom_domain` sem `workers_dev`
+  // explícito faz o deploy desativá-lo sozinho; aqui isso vira decisão
+  // documentada, porque o endereço antigo carregava o nome da conta pessoal
+  // na URL e nenhum link publicado aponta mais para ele. Quem precisar
+  // reativar: trocar para `true` e publicar.
+  "workers_dev": false,
   // Domínio próprio declarado aqui, e não no painel: no deploy o wrangler
   // cria o registro DNS e pede o certificado sozinho. `custom_domain: true`
   // é o que faz o worker responder direto no endereço; sem essa chave o
   // padrão seria uma rota, que exigiria configurar o DNS à mão.
   //
-  // O endereço `nivora-construcoes.luccaoliveira123.workers.dev` continua
-  // ativo de propósito: desligar agora quebraria os links já publicados no
-  // portfólio da Varanda. Quem resolve a ambiguidade é o canonical, que
-  // passa a apontar para cá.
   "routes": [
     {
       "pattern": "nivora.varandaestudioweb.com",

@@ -23,7 +23,7 @@ import "./responsive.css";
    oficial — exatamente o que o canonical deveria resolver. */
 /* Domínio próprio desde 2026-08-10. Enquanto o padrão era o endereço do
    worker, o canonical e a `og:image` continuavam apontando para
-   `luccaoliveira123.workers.dev` mesmo com o domínio novo funcionando — e é
+   o `workers.dev` da conta mesmo com o domínio novo funcionando — e é
    a `og:image` que monta o cartão de pré-visualização quando o link é colado
    no WhatsApp, que é justamente como este projeto chega a um prospect. */
 const siteUrl =
