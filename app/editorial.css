@@ -101,7 +101,18 @@
 .home-hero h1 em { display: block; font-style: normal; }
 .home-hero h1 em { color: var(--mineral); }
 .home-hero__lead {
-  max-width: 520px;
+  /* Os 520px sozinhos bastavam em 1440, onde a foto começa depois do fim do
+     parágrafo. Entre 1101 e 1360 não: a coluna de texto encolhe, a foto se
+     aproxima, e o parágrafo entrava 41 a 70px dentro dela. Medido por pixel,
+     o fundo ali é fotografia de verdade (variação de 75 níveis), com média de
+     6:1 — passa na média e é frágil no pior pedaço, que é o que o leitor
+     encontra.
+
+     Os 82% amarram o parágrafo à própria coluna em vez de a um número fixo,
+     então ele acompanha o encolhimento e nunca alcança a foto. Quem continua
+     atravessando é só o `h1`, que é a assinatura do desenho e tem corpo e
+     peso para isso. */
+  max-width: min(520px, 82%);
   margin: clamp(38px, 5vh, 64px) 0 0;
   color: rgba(23, 25, 22, 0.7);
   font-size: clamp(14px, 1vw, 17px);

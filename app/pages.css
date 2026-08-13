@@ -54,7 +54,17 @@
 .timeline-band,
 .case-comparison,
 .project-directory li.is-active a,
-.project-filters button.is-active {
+.project-filters button.is-active,
+/* Ilha escura dentro de seção CLARA, que é o caso que escapou da rodada de
+   10/08. `.home-hero` tem fundo `--paper`, então herdava o cobre fechado; a
+   legenda sobre a foto, porém, tem fundo `rgba(23,25,22,.9)`. O "01" media
+   2,38:1 sobre ela, em todas as larguras de 375 a 1440.
+
+   A lista acima foi montada olhando seções escuras, e esta não é uma: é uma
+   caixa escura pousada sobre foto dentro de uma seção clara. Vale como
+   lembrete de que o critério é a superfície onde o rótulo cai, e não a cor
+   da seção que o contém. */
+.home-hero__caption {
   --copper-label: var(--copper-on-dark);
 }
 

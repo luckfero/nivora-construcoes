@@ -72,11 +72,45 @@
   .section-title { grid-template-columns: 105px 1fr; gap: 35px; }
   .section-title__copy { display: block; }
   .section-title__copy > p { margin-top: 28px; }
-  .home-hero__grid { min-height: auto; padding-top: 60px; }
-  .home-hero__copy { grid-column: 1 / 8; padding-right: 0; }
-  .home-hero__visual { grid-column: 6 / 13; min-height: 610px; }
-  .home-hero h1 { width: 125%; font-size: clamp(68px, 11vw, 108px); }
-  .home-hero__lead { max-width: 440px; }
+  /* ---- Por que o hero empilha a partir daqui, e não só no celular ----
+
+     A regra anterior mantinha as duas colunas lado a lado e punha a cópia em
+     `1 / 8` contra a imagem em `6 / 13`. As colunas 6 e 7 ficavam com os dois
+     em cima, e a cópia tem `z-index` maior que a foto: **a sobreposição
+     crescia de uma para duas colunas exatamente quando a tela encolhia.**
+
+     Em 820px isso dava 115px de texto por cima da fotografia. O título ainda
+     resistia, porque é enorme e escuro; o parágrafo de apoio, que é cinza a
+     70% de opacidade, virava texto ilegível sobre pedra e vidro. Foi o que o
+     Lucca viu no iPad.
+
+     O empilhamento já existia abaixo de 720px e funcionava. O que faltava era
+     ele começar antes: entre 721 e 1100 não havia largura para duas colunas de
+     verdade, só para duas colunas fingindo. */
+  .home-hero { min-height: auto; }
+  .home-hero__grid {
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 60px var(--pad) 0;
+  }
+  /* `min-width: 0` pelo mesmo motivo do celular: item de flex não encolhe
+     abaixo da maior palavra do título, e sem isto uma palavra longa estica a
+     coluna inteira para fora. */
+  .home-hero__copy { order: 1; min-width: 0; padding-right: 0; }
+  /* Era `width: 125%`, que só fazia sentido para o título atravessar a foto
+     ao lado. Sem foto ao lado, atravessar é sair da tela. */
+  .home-hero h1 { width: 100%; font-size: clamp(56px, 8.8vw, 104px); }
+  .home-hero__lead { max-width: 600px; }
+  /* Sangria até a borda, como no celular: a foto passa a ser a faixa que
+     fecha o hero, e não um retângulo solto com margem de um lado só. */
+  .home-hero__visual {
+    order: 2;
+    width: calc(100% + var(--pad) * 2);
+    min-height: 520px;
+    margin: 54px calc(var(--pad) * -1) 0;
+  }
+  .home-hero__image { inset: 0; }
   .home-hero__specs { grid-template-columns: repeat(3, 1fr); padding-top: 28px; padding-bottom: 30px; }
   .home-hero__specs > p { grid-column: 1 / -1; margin-bottom: 20px; }
   .home-hero__specs > div:first-of-type { border-left: 0; padding-left: 0; }
