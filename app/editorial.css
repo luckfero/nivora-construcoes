@@ -503,6 +503,18 @@
 }
 .comparison__label--before { left: 22px; }
 .comparison__label--after { right: 22px; }
+/* `left` e não `transform`, e isto foi medido, não presumido.
+   A regra geral manda animar só `transform` e `opacity`, então em 2026-08-17
+   este cabo foi convertido para um elemento da largura do contentor deslocado
+   por `translateX(var(--position))`. A geometria ficou idêntica (a linha caía
+   exatamente em 54% e 24%), mas o custo **não mudou**: 48 layouts durante o
+   mesmo arrasto, com o CSS antigo e com o novo, na mesma página e com a CPU
+   4x mais lenta. Os 48 acompanham o número de eventos de ponteiro, não a
+   propriedade animada — quem os gera é o arrasto, não o `left`.
+   A conversão foi revertida por isso: complexidade a mais (elemento de
+   largura cheia mais um `::before`) sem ganho nenhum que se possa mostrar.
+   Se alguém for reabrir isto, medir antes: o alvo é descobrir de onde vêm os
+   48, não trocar a propriedade de novo. */
 .comparison__handle {
   position: absolute;
   z-index: 5;

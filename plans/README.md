@@ -26,7 +26,7 @@ O padrão dos achados é um só: **a Nívora acerta o que animar e erra o quanto
 | [005](005-coerencia-do-hover-dos-cards.md) | Uma velocidade só por interação | MÉDIA | Coesão | **FEITO** |
 | [006](006-reduced-motion-que-reduz.md) | `prefers-reduced-motion` que reduz em vez de cegar | MÉDIA | Acessibilidade | **FEITO** |
 | [007](007-retorno-de-clique.md) | Retorno de clique instantâneo | BAIXA | Física | **FEITO** |
-| [008](008-filtro-no-hover-dos-retratos.md) | Encurtar o hover dos retratos e medir o filtro | BAIXA | Desempenho | **FEITO (1ª etapa)** |
+| [008](008-filtro-no-hover-dos-retratos.md) | Encurtar o hover dos retratos e medir o filtro | BAIXA | Desempenho | **FEITO** — medido em 17/08, 2ª etapa descartada |
 | [009](009-comparador-sem-re-render.md) | Tirar o re-render do arrasto do comparador | BAIXA | Desempenho | **FEITO** |
 | [010](010-escalonar-a-entrada-dos-grupos.md) | Escalonar a entrada dos grupos | BAIXA | Coesão | **FEITO** |
 | [011](011-revelacao-em-css-scroll-driven.md) | Revelação por rolagem em CSS, sem JavaScript | — | Oportunidade | **DESCARTADO** |
@@ -120,3 +120,48 @@ Os dez foram aplicados de uma vez, sobre o commit `3de88bc`.
   feitas: o painel Performance com desaceleração de CPU não é acessível pelas
   ferramentas do navegador embutido. Por isso o plano 008 ficou na primeira
   etapa, e a segunda continua condicionada a essa medição.
+
+## Medições fechadas — 2026-08-17
+
+O que estava pendente por falta de instrumento foi medido com Playwright
+controlando um Chromium de verdade, com `Emulation.setCPUThrottlingRate` em
+4x e `Performance.getMetrics` contando `LayoutCount`. O painel de navegador
+embutido não servia porque não compunha quadros; um navegador de verdade
+serve.
+
+**Plano 004 — provado.** Passando o mouse pela navegação principal três
+vezes: **0 layouts**, com CPU normal e com CPU 4x mais lenta. Era exatamente
+a prova que o plano pedia, e ela fecha a conversão de `right` para
+`transform: scaleX()`.
+
+**Plano 008 — segunda etapa descartada, com número.** O mesmo hover em quatro
+retratos, com o filtro animado e com ele removido, deu **96 quadros e 50ms de
+maior intervalo nos dois casos**, e 0 layouts nos dois. O filtro não custa
+nada mensurável aqui. A regra de decisão escrita no plano manda parar na
+primeira etapa, e é o que fica.
+
+**Plano 009 — funciona, e a medição anterior era inválida.** Com o
+comparador rolado até a tela, o arrasto de mouse move de 54% para 71% e cinco
+setas do teclado movem para 66%. A medição que dava "não moveu" tinha o
+comparador em y=3188 numa janela de 800px: os cliques caíam na seção de cima.
+
+**Revelação por rolagem — provada.** Num navegador que compõe quadros: 0 de 8
+elementos visíveis no carregamento, 8 de 8 depois de rolar a página inteira, e
+saltando direto para o fim nada invisível fica dentro da tela. O que eu tinha
+visto antes (tudo revelado de uma vez) era a rede de segurança de 1 segundo do
+`Reveal.tsx` agindo corretamente num ambiente sem pintura.
+
+### Um experimento que foi revertido
+
+O cabo do comparador usa `left: var(--position)`, e a regra geral manda animar
+só `transform` e `opacity`. Converti para um elemento da largura do contentor
+deslocado por `translateX`. **A geometria ficou idêntica** — a linha caía em
+54% e 24% exatos, o losango centrado, sem transbordo — **e o custo não mudou:
+48 layouts no mesmo arrasto, com o CSS antigo e com o novo, no mesmo
+ambiente.** Os 48 acompanham o número de eventos de ponteiro, não a
+propriedade animada.
+
+Revertido, com o porquê no comentário do `editorial.css`. Mudança sem
+benefício que se possa mostrar não fica, e a lição de método é que **a
+medição diferencial tem que rodar no mesmo ambiente**: minha primeira
+comparação pôs produção contra localhost e não queria dizer nada.
