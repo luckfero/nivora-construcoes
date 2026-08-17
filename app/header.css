@@ -79,15 +79,23 @@
   content: "";
   position: absolute;
   left: 17px;
-  right: 100%;
+  right: 17px;
   bottom: 0;
   height: 3px;
   background: var(--copper);
-  transition: right 0.35s ease;
+  /* A barra existe na largura final e e revelada por escala. Antes ela
+     crescia animando `right`, que recalcula layout a cada quadro do hover
+     na navegacao principal. */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-base) var(--ease-out);
 }
-.desktop-nav a:hover::after,
+/* Toque dispara :hover e o deixa preso: movimento de mouse so aqui. */
+@media (hover: hover) and (pointer: fine) {
+  .desktop-nav a:hover::after { transform: scaleX(1); }
+}
 .desktop-nav a:focus-visible::after,
-.desktop-nav a.is-active::after { right: 17px; }
+.desktop-nav a.is-active::after { transform: scaleX(1); }
 .header-tools {
   display: flex;
   align-items: center;

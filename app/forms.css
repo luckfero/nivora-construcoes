@@ -172,7 +172,7 @@
 }
 .faq-list summary::-webkit-details-marker { display: none; }
 .faq-list summary > span { color: #dfa27e; font-size: 12px; }
-.faq-list summary i { font-style: normal; font-size: 24px; transition: transform 0.3s ease; }
+.faq-list summary i { font-style: normal; font-size: 24px; transition: transform var(--dur-base) var(--ease-out); }
 .faq-list details[open] summary i { transform: rotate(45deg); }
 .faq-list details p { max-width: 680px; margin: 0 0 30px 63px; color: rgba(250, 248, 243, 0.62); font-size: 13px; }
 

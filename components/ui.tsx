@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRef } from "react";
 import { content, hrefFor, Locale } from "@/lib/content";
 import Picture, { SIZES } from "./Picture";
 
@@ -142,10 +142,13 @@ export function BeforeAfter({
   name: string;
   locale: Locale;
 }) {
-  const [position, setPosition] = useState(54);
+  const container = useRef<HTMLDivElement>(null);
   const labels = content.projectLabels[locale];
   return (
-    <div className="comparison" style={{ "--position": `${position}%` } as React.CSSProperties}>
+    /* Os dois 54 abaixo são o mesmo valor inicial escrito duas vezes, e é
+       proposital: um pinta a primeira tela, o outro é a posição do controle.
+       Não unificar em estado — ver o comentário do onChange. */
+    <div className="comparison" ref={container} style={{ "--position": "54%" } as React.CSSProperties}>
       <Picture className="comparison__after" src={after} alt={`${name} — ${labels.after.toLowerCase()}`} sizes={SIZES.half} />
       <Picture className="comparison__before" src={before} alt={`${name} — ${labels.before.toLowerCase()}`} sizes={SIZES.half} />
       <span className="comparison__label comparison__label--before">{labels.before}</span>
@@ -155,8 +158,12 @@ export function BeforeAfter({
         type="range"
         min="8"
         max="92"
-        value={position}
-        onChange={(event) => setPosition(Number(event.target.value))}
+        defaultValue={54}
+        /* A posição não vive em estado do React: o range dispara a cada
+           movimento do ponteiro durante o arrasto, e re-renderizar as duas
+           fotos a cada quadro não se paga. Escrever direto na variável CSS
+           não re-renderiza nada. */
+        onChange={(event) => container.current?.style.setProperty("--position", `${event.target.value}%`)}
         aria-label={`${labels.drag}: ${name}`}
       />
     </div>

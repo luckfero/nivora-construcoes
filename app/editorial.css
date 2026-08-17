@@ -148,7 +148,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  animation: hero-reveal 1.15s cubic-bezier(.22, 1, .36, 1) both;
+  animation: hero-reveal 1.15s var(--ease-out) both;
 }
 .coordinate--top { position: absolute; z-index: 2; top: 4px; right: 2px; color: var(--paper); }
 .coordinate--side {
@@ -235,7 +235,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  animation: image-swap 0.65s cubic-bezier(.22, 1, .36, 1) both;
+  animation: image-swap 0.65s var(--ease-out) both;
 }
 .project-observatory__media::after {
   content: "";
@@ -273,9 +273,14 @@
   background: var(--paper);
   color: var(--ink);
   border-radius: 50%;
-  transition: transform 0.35s ease, background 0.3s ease, color 0.3s ease;
+  transition: transform var(--dur-base) var(--ease-out),
+    background var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
 }
-.project-observatory__media:hover .project-observatory__open { transform: rotate(-12deg); background: var(--copper); color: white; }
+/* Toque dispara :hover e o deixa preso: movimento de mouse so aqui. */
+@media (hover: hover) and (pointer: fine) {
+  .project-observatory__media:hover .project-observatory__open { transform: rotate(-12deg); background: var(--copper); color: white; }
+}
 .project-directory { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
 .project-directory li { border-bottom: 1px solid var(--line); }
 .project-directory a {
@@ -285,7 +290,11 @@
   align-items: center;
   gap: 16px;
   padding: 16px 5px;
-  transition: color 0.3s ease, padding 0.3s ease, background 0.3s ease;
+  /* `padding` fora da lista de proposito: `padding-inline` muda a largura
+     disponivel do grid e nao tem equivalente em transform. Ele troca de uma
+     vez; quem o olho segue e a cor. */
+  transition: color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
 }
 .project-directory li.is-active a { padding-inline: 15px; background: var(--graphite); color: var(--paper); }
 .project-directory a > span { color: var(--copper-label); font: 600 14px var(--display); }
@@ -365,11 +374,23 @@
   background: transparent;
   color: rgba(250, 248, 243, 0.52);
   text-align: left;
-  transition: background 0.3s ease, color 0.3s ease, padding 0.3s ease;
+  transition: background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
 }
-.service-layers__list button:hover,
+/* O recuo saiu do `padding`, que recalcula layout, e virou deslocamento dos
+   filhos. O retangulo de fundo fica parado; so o conteudo anda. */
+.service-layers__list button > * {
+  transition: transform var(--dur-base) var(--ease-out);
+}
+/* Toque dispara :hover e o deixa preso: movimento de mouse so aqui. */
+@media (hover: hover) and (pointer: fine) {
+  .service-layers__list button:hover { background: var(--paper); color: var(--ink); }
+  .service-layers__list button:hover > * { transform: translateX(9px); }
+}
 .service-layers__list button:focus-visible,
-.service-layers__list button.is-active { padding-left: 33px; background: var(--paper); color: var(--ink); }
+.service-layers__list button.is-active { background: var(--paper); color: var(--ink); }
+.service-layers__list button:focus-visible > *,
+.service-layers__list button.is-active > * { transform: translateX(9px); }
 .service-layers__list button > span { color: var(--copper-label); font: 600 14px var(--display); }
 .service-layers__list strong { font: 600 clamp(23px, 2.2vw, 35px)/1 var(--display); letter-spacing: 0.01em; text-transform: uppercase; }
 .service-layers__list i { font-style: normal; font-size: 20px; font-weight: 300; }

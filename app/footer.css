@@ -59,9 +59,21 @@
 .motion-ready [data-reveal] {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.75s ease, transform 0.75s cubic-bezier(.22, 1, .36, 1);
+  transition: opacity var(--dur-reveal) var(--ease-out),
+    transform var(--dur-reveal) var(--ease-out);
 }
 .motion-ready [data-reveal].is-visible { opacity: 1; transform: none; }
+/* Escalonamento. Irmaos de uma lista cruzam a dobra no mesmo instante e
+   apareceriam juntos; 60ms entre eles transformam quatro coisas piscando em
+   uma coisa chegando. O teto no quarto item e proposital: mais que isso o
+   ultimo parece atrasado, nao escalonado. Os cards de obra ficam de fora
+   porque ja entram em tempos diferentes pelo margin-top do grid. */
+.company-story__chapters > [data-reveal]:nth-child(2),
+.principles-axis__list > [data-reveal]:nth-child(2) { transition-delay: 60ms; }
+.company-story__chapters > [data-reveal]:nth-child(3),
+.principles-axis__list > [data-reveal]:nth-child(3) { transition-delay: 120ms; }
+.company-story__chapters > [data-reveal]:nth-child(n + 4),
+.principles-axis__list > [data-reveal]:nth-child(n + 4) { transition-delay: 180ms; }
 @keyframes hero-reveal {
   from { opacity: 0; transform: scale(1.035) translateX(25px); clip-path: inset(0 0 0 100%); }
   to { opacity: 1; transform: none; clip-path: inset(0); }

@@ -127,11 +127,15 @@
   object-position: center 29%;
   filter: saturate(0.88) contrast(1.03);
   transform: scale(1.015);
-  transition: transform 500ms ease, filter 500ms ease;
+  transition: transform var(--dur-slow) var(--ease-out),
+    filter var(--dur-slow) var(--ease-out);
 }
-.team-dossiers__grid article:hover .team-dossiers__monogram img {
-  filter: saturate(1) contrast(1.02);
-  transform: scale(1.045);
+/* Toque dispara :hover e o deixa preso: movimento de mouse so aqui. */
+@media (hover: hover) and (pointer: fine) {
+  .team-dossiers__grid article:hover .team-dossiers__monogram img {
+    filter: saturate(1) contrast(1.02);
+    transform: scale(1.045);
+  }
 }
 .team-dossiers__monogram > span {
   position: absolute;
@@ -217,7 +221,7 @@
 .project-tile__image { position: relative; aspect-ratio: 1.35; overflow: hidden; background: var(--stone); }
 .project-tile--2 .project-tile__image,
 .project-tile--4 .project-tile__image { aspect-ratio: 0.88; }
-.project-tile__image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(.22, 1, .36, 1); }
+.project-tile__image img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-out); }
 .project-tile__image > span {
   position: absolute;
   right: 18px;
@@ -229,12 +233,18 @@
   background: var(--paper);
   color: var(--ink);
   transform: translateY(80px);
-  transition: transform 0.35s ease;
+  /* Mesma duracao da imagem: e um gesto so, e antes as duas metades
+     andavam em velocidades diferentes. */
+  transition: transform var(--dur-slow) var(--ease-out);
 }
-.project-tile a:hover img,
 .project-tile a:focus-visible img { transform: scale(1.035); }
-.project-tile a:hover .project-tile__image > span,
 .project-tile a:focus-visible .project-tile__image > span { transform: translateY(0); }
+/* Toque dispara :hover e o deixa preso: quem tocasse num card voltaria da
+   obra com a imagem ainda ampliada. Movimento de mouse so aqui. */
+@media (hover: hover) and (pointer: fine) {
+  .project-tile a:hover img { transform: scale(1.035); }
+  .project-tile a:hover .project-tile__image > span { transform: translateY(0); }
+}
 .project-tile__meta {
   display: grid;
   grid-template-columns: 38px 1fr auto;

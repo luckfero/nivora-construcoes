@@ -51,7 +51,8 @@
     opacity: 0;
     visibility: hidden;
     transform: translateY(-15px);
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    transition: opacity var(--dur-slow) var(--ease-out),
+      transform var(--dur-slow) var(--ease-out), visibility var(--dur-slow);
   }
   .mobile-nav.is-open { opacity: 1; visibility: visible; transform: none; }
   .mobile-nav nav { border-top: 1px solid var(--line-light); }
@@ -367,15 +368,40 @@
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+
+  /* Animacao de keyframe aqui e sempre decorativa (heroi, troca de imagem,
+     transicao de pagina): sai inteira. */
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
   }
+
+  /* Menos movimento nao e menos resposta. A transicao continua existindo
+     para cor e opacidade, que e o que confirma ao visitante que a interface
+     ouviu ele; o que sai da lista e o deslocamento. Antes daqui havia um
+     `transition-duration: 0.01ms !important` que zerava tudo, inclusive o
+     retorno do clique. */
+  *,
+  *::before,
+  *::after {
+    transition-property: opacity, color, background-color, border-color, fill, stroke !important;
+  }
+
+  /* Sem transicao, um transform de hover viraria pulo instantaneo, que e
+     pior que o movimento suave. Estes sao anulados de vez. */
   .motion-ready [data-reveal] { opacity: 1; transform: none; }
+  .project-tile a:hover img,
+  .project-tile a:focus-visible img,
+  .team-dossiers__grid article:hover .team-dossiers__monogram img {
+    transform: none;
+  }
+  .project-tile a:hover .project-tile__image > span,
+  .project-tile a:focus-visible .project-tile__image > span {
+    transform: translateY(80px);
+  }
 }
 
 /* ---- Transição entre páginas ----
@@ -386,11 +412,11 @@
    lateral — o cabeçalho numera as seções 01 a 04 na horizontal — então a
    troca acompanha essa leitura. */
 ::view-transition-old(root) {
-  animation: pagina-sai 200ms cubic-bezier(.65, 0, .35, 1) both;
+  animation: pagina-sai 200ms var(--ease-out) both;
 }
 
 ::view-transition-new(root) {
-  animation: pagina-entra 460ms cubic-bezier(.22, 1, .36, 1) both;
+  animation: pagina-entra 460ms var(--ease-out) both;
 }
 
 @keyframes pagina-sai {
