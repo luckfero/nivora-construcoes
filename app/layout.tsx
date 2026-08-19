@@ -16,6 +16,7 @@ import "./pages.css";
 import "./forms.css";
 import "./footer.css";
 import "./responsive.css";
+import "./barra-rolagem.css";
 
 /* Sem `metadataBase` o Next escreve o canonical como caminho relativo
    (`/pt` em vez do endereço completo). Relativo é ambíguo: o mesmo `/pt`
@@ -66,7 +67,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body>{children}</body>
+      <body>
+        {/* Tem que rodar antes da primeira pintura: se a barra nativa sumir
+            depois, a página dá um pulo da largura dela. E é por classe de
+            propósito — sem JavaScript ela não entra e o visitante fica com a
+            barra nativa. Nunca existe página sem forma de rolar. */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('tem-js')" }} />
+        {children}
+        <script src="/barra-rolagem.js" defer />
+      </body>
     </html>
   );
 }
